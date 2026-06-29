@@ -25,7 +25,12 @@
 # CELL ********************
 
 # CELL 0 — Install dependencies
-%pip install -q pyodbc
+# pyodbc is pre-installed on Fabric Spark runtime; install only if missing.
+# %pip is disabled in Fabric — use notebookutils.library.install instead.
+try:
+    import pyodbc
+except ImportError:
+    notebookutils.library.install("pyodbc")
 
 # METADATA ********************
 
