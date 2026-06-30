@@ -7,7 +7,7 @@ table dim_date
 		formatString: 0
 		lineageTag: e2303566-124b-48e4-afd4-5f0533ac56bf
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table dim_date
 		formatString: 0
 		lineageTag: c9653504-9ac5-408d-9a30-34b59fb75ec1
 		sourceLineageTag: year
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: year
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table dim_date
 		formatString: 0
 		lineageTag: 75c9d768-3d12-46e2-a9ee-f3c3b62942df
 		sourceLineageTag: quarter
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: quarter
 
 		annotation SummarizationSetBy = Automatic
@@ -47,7 +47,7 @@ table dim_date
 		formatString: 0
 		lineageTag: c1c3ce1d-384a-4de4-af86-90ef1cd07cea
 		sourceLineageTag: month_num
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: month_num
 
 		annotation SummarizationSetBy = Automatic
@@ -66,7 +66,7 @@ table dim_date
 		formatString: 0
 		lineageTag: 62260615-cf34-4e4d-8f21-2eac5a3d6e64
 		sourceLineageTag: day_of_month
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: day_of_month
 
 		annotation SummarizationSetBy = Automatic
@@ -76,7 +76,7 @@ table dim_date
 		formatString: 0
 		lineageTag: 107ea36c-638f-4162-92fb-cf92acd84633
 		sourceLineageTag: day_of_week
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: day_of_week
 
 		annotation SummarizationSetBy = Automatic

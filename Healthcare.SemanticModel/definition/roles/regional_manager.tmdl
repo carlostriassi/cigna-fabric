@@ -1,0 +1,16 @@
+role 'regional_manager'
+	modelPermission: read
+
+	tablePermission dim_patient
+		columnPermission date_of_birth
+			metadataPermission: none
+		columnPermission email
+			metadataPermission: none
+		columnPermission phone
+			metadataPermission: none
+
+	tablePermission dim_provider
+		filterExpression: dim_provider[region_code] = LOOKUPVALUE(dim_security_user[region_code], dim_security_user[user_principal_name], LOWER(USERPRINCIPALNAME()))
+
+	tablePermission dim_security_user
+		metadataPermission: none

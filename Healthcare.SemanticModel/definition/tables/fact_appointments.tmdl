@@ -7,7 +7,7 @@ table fact_appointments
 		formatString: 0
 		lineageTag: 02b8d52f-b5b2-40ff-9d1d-a999257e6f4f
 		sourceLineageTag: fact_appointment_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_appointment_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_appointments
 		formatString: 0
 		lineageTag: 56aa61b3-1d2b-49ea-8378-e264142019bf
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_appointments
 		formatString: 0
 		lineageTag: 267fdf38-6498-46e7-93ea-836a6a37b9e9
 		sourceLineageTag: patient_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: patient_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_appointments
 		formatString: 0
 		lineageTag: b031f6d6-bfa1-47cb-b091-efa80e8c26e7
 		sourceLineageTag: provider_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: provider_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -47,7 +47,7 @@ table fact_appointments
 		formatString: 0
 		lineageTag: 7cc671ac-1934-4f80-a426-1134ff383c8f
 		sourceLineageTag: appointment_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: appointment_id
 
 		annotation SummarizationSetBy = Automatic

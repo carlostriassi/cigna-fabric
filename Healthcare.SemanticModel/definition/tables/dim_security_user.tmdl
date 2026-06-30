@@ -1,0 +1,93 @@
+table dim_security_user
+	lineageTag: ac5ab9d4-953c-479d-a851-e4f2a9150d2e
+	sourceLineageTag: [shared].[dim_security_user]
+
+	column user_principal_name
+		dataType: string
+		lineageTag: 0bda4473-1d25-4f42-8d5d-8bac787bb9b3
+		sourceLineageTag: user_principal_name
+		summarizeBy: none
+		sourceColumn: user_principal_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column display_name
+		dataType: string
+		lineageTag: f4203635-792d-44bc-b2fb-be50b6392d65
+		sourceLineageTag: display_name
+		summarizeBy: none
+		sourceColumn: display_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column domain
+		dataType: string
+		lineageTag: f587f3e8-964f-4f3d-ba05-807c9b30e8d0
+		sourceLineageTag: domain
+		summarizeBy: none
+		sourceColumn: domain
+
+		annotation SummarizationSetBy = Automatic
+
+	column role
+		dataType: string
+		lineageTag: 96d0a616-17e8-47be-b7ae-452a63956041
+		sourceLineageTag: role
+		summarizeBy: none
+		sourceColumn: role
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_active
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: dcb77cb8-17df-403f-8484-f20f36d10a06
+		sourceLineageTag: is_active
+		summarizeBy: none
+		sourceColumn: is_active
+
+		annotation SummarizationSetBy = Automatic
+
+	column department_id
+		dataType: string
+		lineageTag: c9deb0af-2d16-44c2-8067-43c32f55a43b
+		sourceLineageTag: department_id
+		summarizeBy: none
+		sourceColumn: department_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column facility_id
+		dataType: string
+		lineageTag: 2dc1d85e-625e-4934-a161-e1582f04ad27
+		sourceLineageTag: facility_id
+		summarizeBy: none
+		sourceColumn: facility_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d3eff10-09bb-47c7-aed6-ec38e037d748
+		sourceLineageTag: provider_id
+		summarizeBy: none
+		sourceColumn: provider_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_code
+		dataType: string
+		lineageTag: 69347952-a0c7-40ac-a2c2-3a4a70e95f80
+		sourceLineageTag: region_code
+		summarizeBy: none
+		sourceColumn: region_code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_security_user = entity
+		mode: directLake
+		source
+			entityName: dim_security_user
+			schemaName: shared
+			expressionSource: 'DirectLake - GoldLH'

@@ -7,7 +7,7 @@ table dim_patient
 		formatString: 0
 		lineageTag: 10cf83cb-cbda-449f-8430-12a30c6923f7
 		sourceLineageTag: patient_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: patient_id
 
 		annotation SummarizationSetBy = Automatic
@@ -126,7 +126,7 @@ table dim_patient
 		formatString: 0
 		lineageTag: 9159c399-fe54-4912-9b1c-d8ca5905b712
 		sourceLineageTag: primary_provider_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: primary_provider_id
 
 		annotation SummarizationSetBy = Automatic
@@ -181,7 +181,7 @@ table dim_patient
 		formatString: 0
 		lineageTag: fe8715dd-af27-45a6-9262-855d05e14e50
 		sourceLineageTag: patient_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: patient_sk
 
 		annotation SummarizationSetBy = Automatic
