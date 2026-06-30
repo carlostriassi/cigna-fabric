@@ -1,0 +1,20 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["DirectLake - GoldLH"]
+
+ref table fact_procedures
+ref table dim_date
+ref table fact_diagnoses
+ref table fact_appointments
+ref table dim_provider
+ref table dim_patient
+ref table fact_encounters
+

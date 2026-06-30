@@ -1,0 +1,158 @@
+table fact_encounters
+	lineageTag: 85edf9e7-c27b-4706-aa96-30af1b83d855
+	sourceLineageTag: [healthcare].[fact_encounters]
+
+	column fact_encounter_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 149158c1-40ba-4ac9-bc7c-92d3724fe11f
+		sourceLineageTag: fact_encounter_sk
+		summarizeBy: sum
+		sourceColumn: fact_encounter_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e083617-c28a-496d-86a7-cdf080cb9b99
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column patient_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 80a68b39-d97c-4499-9593-bbe1a48528aa
+		sourceLineageTag: patient_sk
+		summarizeBy: sum
+		sourceColumn: patient_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 441f7955-acc8-4e7c-9817-1ab8c1162492
+		sourceLineageTag: provider_sk
+		summarizeBy: sum
+		sourceColumn: provider_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column encounter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 20991f02-b564-4c94-ab6b-460bfc515a46
+		sourceLineageTag: encounter_id
+		summarizeBy: sum
+		sourceColumn: encounter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column encounter_code
+		dataType: string
+		lineageTag: 2e4e6e64-7a95-4674-a27a-47107ae922df
+		sourceLineageTag: encounter_code
+		summarizeBy: none
+		sourceColumn: encounter_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column admit_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: c1f1d71c-8518-4cc0-88b9-4252c002cae9
+		sourceLineageTag: admit_date
+		summarizeBy: none
+		sourceColumn: admit_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column discharge_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ad9b3320-987e-46f8-b730-77469b5eb6c0
+		sourceLineageTag: discharge_date
+		summarizeBy: none
+		sourceColumn: discharge_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column encounter_type
+		dataType: string
+		lineageTag: 5ba3fc9d-15c7-49cf-838a-4a6e3a854c7a
+		sourceLineageTag: encounter_type
+		summarizeBy: none
+		sourceColumn: encounter_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column admission_source
+		dataType: string
+		lineageTag: e593b9ed-dd3f-4e8d-9003-79c2086585fc
+		sourceLineageTag: admission_source
+		summarizeBy: none
+		sourceColumn: admission_source
+
+		annotation SummarizationSetBy = Automatic
+
+	column discharge_disposition
+		dataType: string
+		lineageTag: 717c7653-0255-46af-b2e9-033772de9722
+		sourceLineageTag: discharge_disposition
+		summarizeBy: none
+		sourceColumn: discharge_disposition
+
+		annotation SummarizationSetBy = Automatic
+
+	column appointment_id
+		dataType: int64
+		formatString: 0
+		lineageTag: ef6ef473-cf81-499e-bf55-95bfde3768eb
+		sourceLineageTag: appointment_id
+		summarizeBy: sum
+		sourceColumn: appointment_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column facility_code
+		dataType: string
+		lineageTag: 82c7024d-69c3-492b-84a7-d921364b1b86
+		sourceLineageTag: facility_code
+		summarizeBy: none
+		sourceColumn: facility_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column length_of_stay_days
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c1b89e2-92e8-4221-9093-bfe1076a9856
+		sourceLineageTag: length_of_stay_days
+		summarizeBy: sum
+		sourceColumn: length_of_stay_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_charges
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: f1eca78b-9ec5-4414-9bc2-4f4425b89c84
+		sourceLineageTag: total_charges
+		summarizeBy: sum
+		sourceColumn: total_charges
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	partition fact_encounters = entity
+		mode: directLake
+		source
+			entityName: fact_encounters
+			schemaName: healthcare
+			expressionSource: 'DirectLake - GoldLH'
+

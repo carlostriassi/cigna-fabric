@@ -1,0 +1,140 @@
+table fact_procedures
+	lineageTag: c4bf554b-f3c5-4168-b922-d9d682ef678e
+	sourceLineageTag: [healthcare].[fact_procedures]
+
+	column fact_procedure_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 215cddc9-051d-4304-a389-c6d87c488346
+		sourceLineageTag: fact_procedure_sk
+		summarizeBy: sum
+		sourceColumn: fact_procedure_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 185841c0-351d-4cda-b3e4-7a5b150e6f78
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 59911bc3-64c3-4f25-9869-2b4cd4a746d3
+		sourceLineageTag: provider_sk
+		summarizeBy: sum
+		sourceColumn: provider_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column procedure_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 16231b67-145b-461e-850c-f9fc66e358e7
+		sourceLineageTag: procedure_id
+		summarizeBy: sum
+		sourceColumn: procedure_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column procedure_code
+		dataType: string
+		lineageTag: 1ef1cbe7-5545-4197-8a3b-4b82573e9de2
+		sourceLineageTag: procedure_code
+		summarizeBy: none
+		sourceColumn: procedure_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column encounter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 58b3694e-514c-44bc-8d65-06bdd72f4d15
+		sourceLineageTag: encounter_id
+		summarizeBy: sum
+		sourceColumn: encounter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column cpt_code
+		dataType: string
+		lineageTag: cc0964e4-edcd-46ff-93fb-0be1edcc93b8
+		sourceLineageTag: cpt_code
+		summarizeBy: none
+		sourceColumn: cpt_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column procedure_description
+		dataType: string
+		lineageTag: f624eb9a-7974-414d-b8d0-676798172a34
+		sourceLineageTag: procedure_description
+		summarizeBy: none
+		sourceColumn: procedure_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column procedure_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 11e47381-cd2a-4ba4-b072-fbdd31f918de
+		sourceLineageTag: procedure_date
+		summarizeBy: none
+		sourceColumn: procedure_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column procedure_status
+		dataType: string
+		lineageTag: 59cda13c-a471-40f1-a86c-eb26a162b6df
+		sourceLineageTag: procedure_status
+		summarizeBy: none
+		sourceColumn: procedure_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column units
+		dataType: int64
+		formatString: 0
+		lineageTag: a28e5fba-31ec-442f-9a84-8c0df1da7e06
+		sourceLineageTag: units
+		summarizeBy: sum
+		sourceColumn: units
+
+		annotation SummarizationSetBy = Automatic
+
+	column charge_amount
+		dataType: decimal
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 09057aef-9cac-44d3-a8e7-8b504a1fc928
+		sourceLineageTag: charge_amount
+		summarizeBy: sum
+		sourceColumn: charge_amount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	column total_charge
+		dataType: double
+		lineageTag: 1daaf47d-f897-406a-bfe8-8201dfb640cd
+		sourceLineageTag: total_charge
+		summarizeBy: sum
+		sourceColumn: total_charge
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_procedures = entity
+		mode: directLake
+		source
+			entityName: fact_procedures
+			schemaName: healthcare
+			expressionSource: 'DirectLake - GoldLH'
+
