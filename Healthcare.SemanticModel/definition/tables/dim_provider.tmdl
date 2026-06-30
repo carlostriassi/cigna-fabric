@@ -7,7 +7,7 @@ table dim_provider
 		formatString: 0
 		lineageTag: dfa05d4e-9c38-48ca-955c-4ce6b574b643
 		sourceLineageTag: provider_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: provider_id
 
 		annotation SummarizationSetBy = Automatic
@@ -126,7 +126,7 @@ table dim_provider
 		formatString: 0
 		lineageTag: c42c8a6a-5d4f-4863-8ed7-90e2c41d39b0
 		sourceLineageTag: provider_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: provider_sk
 
 		annotation SummarizationSetBy = Automatic

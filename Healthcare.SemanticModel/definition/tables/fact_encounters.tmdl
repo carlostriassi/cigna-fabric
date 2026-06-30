@@ -7,7 +7,7 @@ table fact_encounters
 		formatString: 0
 		lineageTag: 149158c1-40ba-4ac9-bc7c-92d3724fe11f
 		sourceLineageTag: fact_encounter_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_encounter_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_encounters
 		formatString: 0
 		lineageTag: 7e083617-c28a-496d-86a7-cdf080cb9b99
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_encounters
 		formatString: 0
 		lineageTag: 80a68b39-d97c-4499-9593-bbe1a48528aa
 		sourceLineageTag: patient_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: patient_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_encounters
 		formatString: 0
 		lineageTag: 441f7955-acc8-4e7c-9817-1ab8c1162492
 		sourceLineageTag: provider_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: provider_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -47,7 +47,7 @@ table fact_encounters
 		formatString: 0
 		lineageTag: 20991f02-b564-4c94-ab6b-460bfc515a46
 		sourceLineageTag: encounter_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: encounter_id
 
 		annotation SummarizationSetBy = Automatic
@@ -113,7 +113,7 @@ table fact_encounters
 		formatString: 0
 		lineageTag: ef6ef473-cf81-499e-bf55-95bfde3768eb
 		sourceLineageTag: appointment_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: appointment_id
 
 		annotation SummarizationSetBy = Automatic

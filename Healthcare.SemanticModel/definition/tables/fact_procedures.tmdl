@@ -7,7 +7,7 @@ table fact_procedures
 		formatString: 0
 		lineageTag: 215cddc9-051d-4304-a389-c6d87c488346
 		sourceLineageTag: fact_procedure_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_procedure_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_procedures
 		formatString: 0
 		lineageTag: 185841c0-351d-4cda-b3e4-7a5b150e6f78
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_procedures
 		formatString: 0
 		lineageTag: 59911bc3-64c3-4f25-9869-2b4cd4a746d3
 		sourceLineageTag: provider_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: provider_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_procedures
 		formatString: 0
 		lineageTag: 16231b67-145b-461e-850c-f9fc66e358e7
 		sourceLineageTag: procedure_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: procedure_id
 
 		annotation SummarizationSetBy = Automatic
@@ -56,7 +56,7 @@ table fact_procedures
 		formatString: 0
 		lineageTag: 58b3694e-514c-44bc-8d65-06bdd72f4d15
 		sourceLineageTag: encounter_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: encounter_id
 
 		annotation SummarizationSetBy = Automatic

@@ -7,7 +7,7 @@ table fact_diagnoses
 		formatString: 0
 		lineageTag: c1be2d3c-f6dc-4751-ad27-3fae1729f3c1
 		sourceLineageTag: fact_diagnosis_sk
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: fact_diagnosis_sk
 
 		annotation SummarizationSetBy = Automatic
@@ -17,7 +17,7 @@ table fact_diagnoses
 		formatString: 0
 		lineageTag: f28b5031-2db0-464b-8d65-1011a1599d41
 		sourceLineageTag: date_key
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: date_key
 
 		annotation SummarizationSetBy = Automatic
@@ -27,7 +27,7 @@ table fact_diagnoses
 		formatString: 0
 		lineageTag: 9b39faca-a31d-44b5-89b2-805cd13b1d42
 		sourceLineageTag: encounter_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: encounter_id
 
 		annotation SummarizationSetBy = Automatic
@@ -37,7 +37,7 @@ table fact_diagnoses
 		formatString: 0
 		lineageTag: f11b1d7d-8d12-4ac3-87f0-30ea5a862cec
 		sourceLineageTag: diagnosis_id
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: diagnosis_id
 
 		annotation SummarizationSetBy = Automatic

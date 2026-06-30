@@ -1,0 +1,27 @@
+role 'healthcare_auditor'
+	modelPermission: read
+
+	tablePermission dim_patient
+		columnPermission date_of_birth
+			metadataPermission: none
+		columnPermission email
+			metadataPermission: none
+		columnPermission phone
+			metadataPermission: none
+		columnPermission address_line_1
+			metadataPermission: none
+		columnPermission zip_code
+			metadataPermission: none
+		columnPermission mrn
+			metadataPermission: none
+		columnPermission first_name
+			metadataPermission: none
+		columnPermission last_name
+			metadataPermission: none
+
+	tablePermission dim_provider
+		columnPermission license_number
+			metadataPermission: none
+
+	tablePermission dim_security_user
+		metadataPermission: none

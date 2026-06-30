@@ -1,0 +1,45 @@
+relationship 'fact_encounters-dim_date-date_key'
+	fromColumn: fact_encounters.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_encounters-dim_patient-patient_sk'
+	fromColumn: fact_encounters.patient_sk
+	toColumn: dim_patient.patient_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_encounters-dim_provider-provider_sk'
+	fromColumn: fact_encounters.provider_sk
+	toColumn: dim_provider.provider_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_appointments-dim_date-date_key'
+	fromColumn: fact_appointments.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_appointments-dim_patient-patient_sk'
+	fromColumn: fact_appointments.patient_sk
+	toColumn: dim_patient.patient_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_appointments-dim_provider-provider_sk'
+	fromColumn: fact_appointments.provider_sk
+	toColumn: dim_provider.provider_sk
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_diagnoses-dim_date-date_key'
+	fromColumn: fact_diagnoses.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_procedures-dim_date-date_key'
+	fromColumn: fact_procedures.date_key
+	toColumn: dim_date.date_key
+	crossFilteringBehavior: oneDirection
+
+relationship 'fact_procedures-dim_provider-provider_sk'
+	fromColumn: fact_procedures.provider_sk
+	toColumn: dim_provider.provider_sk
+	crossFilteringBehavior: oneDirection
+
