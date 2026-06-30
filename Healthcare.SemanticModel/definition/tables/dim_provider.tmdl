@@ -1,0 +1,140 @@
+table dim_provider
+	lineageTag: 9665374c-a4c0-44b7-a720-068829ab9992
+	sourceLineageTag: [healthcare].[dim_provider]
+
+	column provider_id
+		dataType: int64
+		formatString: 0
+		lineageTag: dfa05d4e-9c38-48ca-955c-4ce6b574b643
+		sourceLineageTag: provider_id
+		summarizeBy: sum
+		sourceColumn: provider_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_code
+		dataType: string
+		lineageTag: 19bbebd6-89ef-46a0-ad78-66eba1a220d1
+		sourceLineageTag: provider_code
+		summarizeBy: none
+		sourceColumn: provider_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column npi_number
+		dataType: string
+		lineageTag: 31ae5f06-898a-49c7-afb8-6094d5e41f1a
+		sourceLineageTag: npi_number
+		summarizeBy: none
+		sourceColumn: npi_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_name
+		dataType: string
+		lineageTag: 361bf57e-65d1-4338-a27a-ad03ad751686
+		sourceLineageTag: first_name
+		summarizeBy: none
+		sourceColumn: first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_name
+		dataType: string
+		lineageTag: 86692b31-fb76-461a-8728-d606ee5e9aba
+		sourceLineageTag: last_name
+		summarizeBy: none
+		sourceColumn: last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column specialty
+		dataType: string
+		lineageTag: d623d325-e02a-4cc8-acb0-164a20465494
+		sourceLineageTag: specialty
+		summarizeBy: none
+		sourceColumn: specialty
+
+		annotation SummarizationSetBy = Automatic
+
+	column credential_type
+		dataType: string
+		lineageTag: 2f67ca4d-f79f-43f0-b48f-95fa587368ca
+		sourceLineageTag: credential_type
+		summarizeBy: none
+		sourceColumn: credential_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column license_state
+		dataType: string
+		lineageTag: c87cd107-6268-4e44-96c6-589252621493
+		sourceLineageTag: license_state
+		summarizeBy: none
+		sourceColumn: license_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column license_number
+		dataType: string
+		lineageTag: ec555a2c-1884-4766-b77e-6a556747c9ef
+		sourceLineageTag: license_number
+		summarizeBy: none
+		sourceColumn: license_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column employment_status
+		dataType: string
+		lineageTag: 21328ead-918d-4634-bd2d-d192333599f1
+		sourceLineageTag: employment_status
+		summarizeBy: none
+		sourceColumn: employment_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column hire_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: eeb52e54-c5c9-4553-ad35-94c711338671
+		sourceLineageTag: hire_date
+		summarizeBy: none
+		sourceColumn: hire_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_code
+		dataType: string
+		lineageTag: cdcc64aa-e0be-4fa9-a4a7-a208ef96cbf4
+		sourceLineageTag: region_code
+		summarizeBy: none
+		sourceColumn: region_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column department_code
+		dataType: string
+		lineageTag: 4d3c867a-fdc0-4170-a1fb-ffc5b7c7ffdb
+		sourceLineageTag: department_code
+		summarizeBy: none
+		sourceColumn: department_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: c42c8a6a-5d4f-4863-8ed7-90e2c41d39b0
+		sourceLineageTag: provider_sk
+		summarizeBy: sum
+		sourceColumn: provider_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_provider = entity
+		mode: directLake
+		source
+			entityName: dim_provider
+			schemaName: healthcare
+			expressionSource: 'DirectLake - GoldLH'
+

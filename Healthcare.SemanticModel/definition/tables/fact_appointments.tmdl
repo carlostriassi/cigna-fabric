@@ -1,0 +1,117 @@
+table fact_appointments
+	lineageTag: 65b70471-eb4e-43e9-b68e-b29603aedcc2
+	sourceLineageTag: [healthcare].[fact_appointments]
+
+	column fact_appointment_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 02b8d52f-b5b2-40ff-9d1d-a999257e6f4f
+		sourceLineageTag: fact_appointment_sk
+		summarizeBy: sum
+		sourceColumn: fact_appointment_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 56aa61b3-1d2b-49ea-8378-e264142019bf
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column patient_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 267fdf38-6498-46e7-93ea-836a6a37b9e9
+		sourceLineageTag: patient_sk
+		summarizeBy: sum
+		sourceColumn: patient_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: b031f6d6-bfa1-47cb-b091-efa80e8c26e7
+		sourceLineageTag: provider_sk
+		summarizeBy: sum
+		sourceColumn: provider_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column appointment_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7cc671ac-1934-4f80-a426-1134ff383c8f
+		sourceLineageTag: appointment_id
+		summarizeBy: sum
+		sourceColumn: appointment_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column appointment_code
+		dataType: string
+		lineageTag: a4ff2827-4d60-4366-8eb0-95faaae6db88
+		sourceLineageTag: appointment_code
+		summarizeBy: none
+		sourceColumn: appointment_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column scheduled_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 137e6667-548b-4dad-a93e-61d8e9da9a66
+		sourceLineageTag: scheduled_at
+		summarizeBy: none
+		sourceColumn: scheduled_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column appointment_status
+		dataType: string
+		lineageTag: af35501f-6263-4de1-a122-2743365bff81
+		sourceLineageTag: appointment_status
+		summarizeBy: none
+		sourceColumn: appointment_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column appointment_type
+		dataType: string
+		lineageTag: fa5987c3-195d-4651-92ad-f619e19228ec
+		sourceLineageTag: appointment_type
+		summarizeBy: none
+		sourceColumn: appointment_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_minutes
+		dataType: int64
+		formatString: 0
+		lineageTag: 715996c2-7657-45ca-990e-75ad4bb09ce8
+		sourceLineageTag: duration_minutes
+		summarizeBy: sum
+		sourceColumn: duration_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+	column department_code
+		dataType: string
+		lineageTag: ef183797-933e-4468-989e-8fbaec7d0663
+		sourceLineageTag: department_code
+		summarizeBy: none
+		sourceColumn: department_code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_appointments = entity
+		mode: directLake
+		source
+			entityName: fact_appointments
+			schemaName: healthcare
+			expressionSource: 'DirectLake - GoldLH'
+

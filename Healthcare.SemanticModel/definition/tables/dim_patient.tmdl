@@ -1,0 +1,225 @@
+table dim_patient
+	lineageTag: 260e1933-4218-48f4-918b-e74b39b21f3e
+	sourceLineageTag: [healthcare].[dim_patient]
+
+	column patient_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 10cf83cb-cbda-449f-8430-12a30c6923f7
+		sourceLineageTag: patient_id
+		summarizeBy: sum
+		sourceColumn: patient_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column patient_code
+		dataType: string
+		lineageTag: 640f2154-9c51-4d75-96f8-9f9df6e87b8d
+		sourceLineageTag: patient_code
+		summarizeBy: none
+		sourceColumn: patient_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column mrn
+		dataType: string
+		lineageTag: 94b4fc64-dde9-4b44-b080-69f83f97d77d
+		sourceLineageTag: mrn
+		summarizeBy: none
+		sourceColumn: mrn
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_name
+		dataType: string
+		lineageTag: f7c6a0df-9935-490f-87ec-499546b16873
+		sourceLineageTag: first_name
+		summarizeBy: none
+		sourceColumn: first_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_name
+		dataType: string
+		lineageTag: 8ea17789-3a33-4e53-9875-3cc8cb3ad540
+		sourceLineageTag: last_name
+		summarizeBy: none
+		sourceColumn: last_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_of_birth
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a6a91d85-ba05-4d63-88ce-7afca8c8275a
+		sourceLineageTag: date_of_birth
+		summarizeBy: none
+		sourceColumn: date_of_birth
+
+		annotation SummarizationSetBy = Automatic
+
+	column gender
+		dataType: string
+		lineageTag: 3c74b49a-aede-42f9-81ee-112b23b59989
+		sourceLineageTag: gender
+		summarizeBy: none
+		sourceColumn: gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column address_line_1
+		dataType: string
+		lineageTag: 1268e751-9d92-43a1-8740-20e13bc242b4
+		sourceLineageTag: address_line_1
+		summarizeBy: none
+		sourceColumn: address_line_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: b7d48389-391d-4bc5-be37-b5dcbbcee722
+		sourceLineageTag: city
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: b40b9d38-ccb4-4d84-9e18-121192283b93
+		sourceLineageTag: state
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column zip_code
+		dataType: string
+		lineageTag: 9502e4ac-5b73-4b5b-9d88-fc037cb4582e
+		sourceLineageTag: zip_code
+		summarizeBy: none
+		sourceColumn: zip_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column phone
+		dataType: string
+		lineageTag: 532e7b97-9893-4c6c-bb50-18ad1eee5987
+		sourceLineageTag: phone
+		summarizeBy: none
+		sourceColumn: phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column email
+		dataType: string
+		lineageTag: 351696f3-a273-4df8-a216-913fb1426474
+		sourceLineageTag: email
+		summarizeBy: none
+		sourceColumn: email
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_provider_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9159c399-fe54-4912-9b1c-d8ca5905b712
+		sourceLineageTag: primary_provider_id
+		summarizeBy: sum
+		sourceColumn: primary_provider_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column insurance_carrier
+		dataType: string
+		lineageTag: 732f1a29-fe30-461d-831e-6b248d12f103
+		sourceLineageTag: insurance_carrier
+		summarizeBy: none
+		sourceColumn: insurance_carrier
+
+		annotation SummarizationSetBy = Automatic
+
+	column consent_status
+		dataType: string
+		lineageTag: d554dfe9-b5fb-4100-8632-22ef9ada390c
+		sourceLineageTag: consent_status
+		summarizeBy: none
+		sourceColumn: consent_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column race
+		dataType: string
+		lineageTag: adf2585f-5d28-4739-b808-7381f70edc7c
+		sourceLineageTag: race
+		summarizeBy: none
+		sourceColumn: race
+
+		annotation SummarizationSetBy = Automatic
+
+	column preferred_language
+		dataType: string
+		lineageTag: 4bb484e8-6220-4e0d-af7a-e6f34475b4cb
+		sourceLineageTag: preferred_language
+		summarizeBy: none
+		sourceColumn: preferred_language
+
+		annotation SummarizationSetBy = Automatic
+
+	column _scd2_hash
+		dataType: string
+		lineageTag: 2bb75908-568e-4f62-9208-2d7f421ed416
+		sourceLineageTag: _scd2_hash
+		summarizeBy: none
+		sourceColumn: _scd2_hash
+
+		annotation SummarizationSetBy = Automatic
+
+	column patient_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: fe8715dd-af27-45a6-9262-855d05e14e50
+		sourceLineageTag: patient_sk
+		summarizeBy: sum
+		sourceColumn: patient_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column eff_start_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a4f7bc78-7dfa-4a4d-bbe4-c2d5dce52628
+		sourceLineageTag: eff_start_date
+		summarizeBy: none
+		sourceColumn: eff_start_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column eff_end_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 872f6700-9a9d-46f7-a0e7-55778598bd36
+		sourceLineageTag: eff_end_date
+		summarizeBy: none
+		sourceColumn: eff_end_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_current
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1b111e1f-ce77-4949-8c34-731b1a4e5c89
+		sourceLineageTag: is_current
+		summarizeBy: none
+		sourceColumn: is_current
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_patient = entity
+		mode: directLake
+		source
+			entityName: dim_patient
+			schemaName: healthcare
+			expressionSource: 'DirectLake - GoldLH'
+

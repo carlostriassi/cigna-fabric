@@ -1,0 +1,87 @@
+table fact_diagnoses
+	lineageTag: 3ca0fa66-0c9b-4c4b-bbf4-20befb8bb4fa
+	sourceLineageTag: [healthcare].[fact_diagnoses]
+
+	column fact_diagnosis_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: c1be2d3c-f6dc-4751-ad27-3fae1729f3c1
+		sourceLineageTag: fact_diagnosis_sk
+		summarizeBy: sum
+		sourceColumn: fact_diagnosis_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: f28b5031-2db0-464b-8d65-1011a1599d41
+		sourceLineageTag: date_key
+		summarizeBy: sum
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column encounter_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b39faca-a31d-44b5-89b2-805cd13b1d42
+		sourceLineageTag: encounter_id
+		summarizeBy: sum
+		sourceColumn: encounter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column diagnosis_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f11b1d7d-8d12-4ac3-87f0-30ea5a862cec
+		sourceLineageTag: diagnosis_id
+		summarizeBy: sum
+		sourceColumn: diagnosis_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column icd_10_code
+		dataType: string
+		lineageTag: c342f9fd-fb28-42b8-b17c-ed01b3f26e3e
+		sourceLineageTag: icd_10_code
+		summarizeBy: none
+		sourceColumn: icd_10_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column diagnosis_description
+		dataType: string
+		lineageTag: c0428e4c-fba7-44ee-a4ad-9ca4ed2a47e5
+		sourceLineageTag: diagnosis_description
+		summarizeBy: none
+		sourceColumn: diagnosis_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column diagnosis_type
+		dataType: string
+		lineageTag: d3cca71b-f940-49b7-97ed-e2d9ead01143
+		sourceLineageTag: diagnosis_type
+		summarizeBy: none
+		sourceColumn: diagnosis_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column severity
+		dataType: string
+		lineageTag: b6d7b982-72db-46b8-ad59-419f87445104
+		sourceLineageTag: severity
+		summarizeBy: none
+		sourceColumn: severity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_diagnoses = entity
+		mode: directLake
+		source
+			entityName: fact_diagnoses
+			schemaName: healthcare
+			expressionSource: 'DirectLake - GoldLH'
+
