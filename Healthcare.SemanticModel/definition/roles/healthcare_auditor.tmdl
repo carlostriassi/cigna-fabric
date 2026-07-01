@@ -1,27 +1,30 @@
-role 'healthcare_auditor'
+role healthcare_auditor
 	modelPermission: read
 
 	tablePermission dim_patient
-		columnPermission date_of_birth
-			metadataPermission: none
-		columnPermission email
-			metadataPermission: none
-		columnPermission phone
-			metadataPermission: none
-		columnPermission address_line_1
-			metadataPermission: none
-		columnPermission zip_code
-			metadataPermission: none
-		columnPermission mrn
-			metadataPermission: none
-		columnPermission first_name
-			metadataPermission: none
-		columnPermission last_name
-			metadataPermission: none
+
+		columnPermission date_of_birth = none
+
+		columnPermission email = none
+
+		columnPermission phone = none
+
+		columnPermission address_line_1 = none
+
+		columnPermission zip_code = none
+
+		columnPermission mrn = none
+
+		columnPermission first_name = none
+
+		columnPermission last_name = none
 
 	tablePermission dim_provider
-		columnPermission license_number
-			metadataPermission: none
+
+		columnPermission license_number = none
 
 	tablePermission dim_security_user
 		metadataPermission: none
+
+	annotation PBI_Id = 5b5d28ca488d4d79b505ce1e873fd7a1
+

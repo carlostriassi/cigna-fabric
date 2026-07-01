@@ -2,6 +2,171 @@ table fact_procedures
 	lineageTag: c4bf554b-f3c5-4168-b922-d9d682ef678e
 	sourceLineageTag: [healthcare].[fact_procedures]
 
+	measure 'Last Procedures Date' =
+			LASTNONBLANK (
+			'dim_date'[full_date],
+			CALCULATE ( COUNTROWS ( fact_procedures ) )
+			)
+		lineageTag: 09fb709e-6abe-4561-8af0-be9aa7809f45
+
+	measure 'Total Procedures' = COUNTROWS ( fact_procedures )
+		lineageTag: b3578d96-7731-4f10-93cd-43852edad9e5
+
+	measure 'Procedures YTD' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Procedures],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ), 1, 1 ),
+			_refDate
+			)
+			)
+		lineageTag: d57081c2-b31b-4cae-b715-5b963d381620
+
+	measure 'Procedures MTD' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Procedures],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			EOMONTH ( _refDate, -1 ) + 1,
+			_refDate
+			)
+			)
+		lineageTag: c2cae73f-15a2-4767-817d-4539a9015acf
+
+	measure 'Total Procedures LY' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Procedures],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ) - 1, 1, 1 ),
+			EDATE ( _refDate, -12 )
+			)
+			)
+		lineageTag: 78dcff08-3bc9-4fb7-9e6d-7be3194f7c88
+
+	measure 'Procedures YoY %' =
+			DIVIDE (
+			[Total Procedures] - [Total Procedures LY],
+			[Total Procedures LY],
+			BLANK ()
+			)
+		lineageTag: f82320f2-e53b-40b0-be2c-a30c611db5ce
+
+	measure 'Total Charge Amount' = SUM ( fact_procedures[charge_amount] )
+		lineageTag: 96bd574f-d3e2-434b-8b07-8716768e10d7
+
+	measure 'Avg Charge Amount' = AVERAGE ( fact_procedures[charge_amount] )
+		lineageTag: 84022c4a-3d22-401d-812b-de26a37e4749
+
+	measure 'Charge Amount YTD' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Charge Amount],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ), 1, 1 ),
+			_refDate
+			)
+			)
+		lineageTag: e65926d3-5209-470a-bb7c-2c011debcc84
+
+	measure 'Total Charge Amount LY' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Charge Amount],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ) - 1, 1, 1 ),
+			EDATE ( _refDate, -12 )
+			)
+			)
+		lineageTag: 5d4bac7e-6ead-4d52-8a8d-e109ec9e3c07
+
+	measure 'Charge Amount YoY %' =
+			DIVIDE (
+			[Total Charge Amount] - [Total Charge Amount LY],
+			[Total Charge Amount LY],
+			BLANK ()
+			)
+		lineageTag: d9d7637c-db0d-4b92-afa7-eed11950eec7
+
+	measure 'Charge Amount 3M Rolling' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Charge Amount],
+			DATESINPERIOD (
+			'dim_date'[full_date],
+			_refDate,
+			-3,
+			MONTH
+			)
+			)
+		lineageTag: 92562fc6-a191-44b1-b288-61e701c1d481
+
+	measure 'Total Total Charge' = SUM ( fact_procedures[total_charge] )
+		lineageTag: 2e0d835c-4e5d-48cf-839a-5d80df3342d0
+
+	measure 'Avg Total Charge' = AVERAGE ( fact_procedures[total_charge] )
+		lineageTag: d4d62f0a-de57-4550-9ae3-8a0df7d3a7c0
+
+	measure 'Total Charge YTD' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Total Charge],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ), 1, 1 ),
+			_refDate
+			)
+			)
+		lineageTag: d98f9727-aa57-46ef-af77-0df07322d0cb
+
+	measure 'Total Total Charge LY' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Total Charge],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ) - 1, 1, 1 ),
+			EDATE ( _refDate, -12 )
+			)
+			)
+		lineageTag: e947dcb5-09da-4d01-9ec7-a50e1f937b38
+
+	measure 'Total Charge YoY %' =
+			DIVIDE (
+			[Total Total Charge] - [Total Total Charge LY],
+			[Total Total Charge LY],
+			BLANK ()
+			)
+		lineageTag: 885d4dc6-e051-4271-9459-8f06b14170c3
+
+	measure 'Total Charge 3M Rolling' =
+			VAR _refDate = [Last Procedures Date]
+			RETURN
+			CALCULATE (
+			[Total Total Charge],
+			DATESINPERIOD (
+			'dim_date'[full_date],
+			_refDate,
+			-3,
+			MONTH
+			)
+			)
+		lineageTag: eeed5df3-c834-4cc8-8e05-c3c113150d60
+
 	column fact_procedure_sk
 		dataType: int64
 		formatString: 0

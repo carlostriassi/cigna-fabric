@@ -38,37 +38,8 @@ table dim_security_user
 
 		annotation SummarizationSetBy = Automatic
 
-	column is_active
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: dcb77cb8-17df-403f-8484-f20f36d10a06
-		sourceLineageTag: is_active
-		summarizeBy: none
-		sourceColumn: is_active
-
-		annotation SummarizationSetBy = Automatic
-
-	column department_id
-		dataType: string
-		lineageTag: c9deb0af-2d16-44c2-8067-43c32f55a43b
-		sourceLineageTag: department_id
-		summarizeBy: none
-		sourceColumn: department_id
-
-		annotation SummarizationSetBy = Automatic
-
-	column facility_id
-		dataType: string
-		lineageTag: 2dc1d85e-625e-4934-a161-e1582f04ad27
-		sourceLineageTag: facility_id
-		summarizeBy: none
-		sourceColumn: facility_id
-
-		annotation SummarizationSetBy = Automatic
-
 	column provider_id
-		dataType: int64
-		formatString: 0
+		dataType: string
 		lineageTag: 0d3eff10-09bb-47c7-aed6-ec38e037d748
 		sourceLineageTag: provider_id
 		summarizeBy: none
@@ -85,9 +56,50 @@ table dim_security_user
 
 		annotation SummarizationSetBy = Automatic
 
+	column is_active
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: dcb77cb8-17df-403f-8484-f20f36d10a06
+		sourceLineageTag: is_active
+		summarizeBy: none
+		sourceColumn: is_active
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: a6d451c0-547b-423e-9e20-425fa1eed93f
+		sourceLineageTag: user_sk
+		summarizeBy: sum
+		sourceColumn: user_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column _created_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: ee7e6698-1c8a-40cd-9609-beafaa29511f
+		sourceLineageTag: _created_at
+		summarizeBy: none
+		sourceColumn: _created_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column _updated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a480332f-0c36-4e8e-bd8a-6f2b23e9ad29
+		sourceLineageTag: _updated_at
+		summarizeBy: none
+		sourceColumn: _updated_at
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_security_user = entity
 		mode: directLake
 		source
 			entityName: dim_security_user
 			schemaName: shared
 			expressionSource: 'DirectLake - GoldLH'
+

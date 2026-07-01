@@ -2,6 +2,63 @@ table fact_diagnoses
 	lineageTag: 3ca0fa66-0c9b-4c4b-bbf4-20befb8bb4fa
 	sourceLineageTag: [healthcare].[fact_diagnoses]
 
+	measure 'Last Diagnoses Date' =
+			LASTNONBLANK (
+			'dim_date'[full_date],
+			CALCULATE ( COUNTROWS ( fact_diagnoses ) )
+			)
+		lineageTag: 5f68cc7a-1531-449c-b072-28ad1a5c71c2
+
+	measure 'Total Diagnoses' = COUNTROWS ( fact_diagnoses )
+		lineageTag: 5f055b16-3914-4cab-8b80-2a4bc50becc4
+
+	measure 'Diagnoses YTD' =
+			VAR _refDate = [Last Diagnoses Date]
+			RETURN
+			CALCULATE (
+			[Total Diagnoses],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ), 1, 1 ),
+			_refDate
+			)
+			)
+		lineageTag: e9b9eebb-c63e-418b-8efc-47e955f6064c
+
+	measure 'Diagnoses MTD' =
+			VAR _refDate = [Last Diagnoses Date]
+			RETURN
+			CALCULATE (
+			[Total Diagnoses],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			EOMONTH ( _refDate, -1 ) + 1,
+			_refDate
+			)
+			)
+		lineageTag: 9b536a41-51c4-4797-8a3a-0a55805cad42
+
+	measure 'Total Diagnoses LY' =
+			VAR _refDate = [Last Diagnoses Date]
+			RETURN
+			CALCULATE (
+			[Total Diagnoses],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ) - 1, 1, 1 ),
+			EDATE ( _refDate, -12 )
+			)
+			)
+		lineageTag: d23be0ac-a437-45a0-9dd2-46216ddd2c90
+
+	measure 'Diagnoses YoY %' =
+			DIVIDE (
+			[Total Diagnoses] - [Total Diagnoses LY],
+			[Total Diagnoses LY],
+			BLANK ()
+			)
+		lineageTag: 954389e1-2409-47b8-acc9-2fa754fe8e0f
+
 	column fact_diagnosis_sk
 		dataType: int64
 		formatString: 0

@@ -1,5 +1,8 @@
-role 'healthcare_executive'
+role healthcare_executive
 	modelPermission: read
 
 	tablePermission dim_security_user
 		metadataPermission: none
+
+	annotation PBI_Id = 233c204e4b744f8496ea9e9f6c19fcda
+
