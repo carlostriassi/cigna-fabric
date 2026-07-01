@@ -18,7 +18,9 @@ ref table dim_provider
 ref table dim_patient
 ref table fact_encounters
 ref table dim_security_user
-ref role 'healthcare_provider'
-ref role 'regional_manager'
-ref role 'healthcare_executive'
-ref role 'healthcare_auditor'
+
+ref role healthcare_provider
+ref role regional_manager
+ref role healthcare_executive
+ref role healthcare_auditor
+

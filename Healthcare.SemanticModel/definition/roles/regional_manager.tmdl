@@ -1,16 +1,18 @@
-role 'regional_manager'
+role regional_manager
 	modelPermission: read
 
 	tablePermission dim_patient
-		columnPermission date_of_birth
-			metadataPermission: none
-		columnPermission email
-			metadataPermission: none
-		columnPermission phone
-			metadataPermission: none
 
-	tablePermission dim_provider
-		filterExpression: dim_provider[region_code] = LOOKUPVALUE(dim_security_user[region_code], dim_security_user[user_principal_name], LOWER(USERPRINCIPALNAME()))
+		columnPermission date_of_birth = none
+
+		columnPermission email = none
+
+		columnPermission phone = none
+
+	tablePermission dim_provider = dim_provider[region_code] = LOOKUPVALUE(dim_security_user[region_code], dim_security_user[user_principal_name], LOWER(USERPRINCIPALNAME()))
 
 	tablePermission dim_security_user
 		metadataPermission: none
+
+	annotation PBI_Id = 14a71a4c36de4e4f8f0e3cb088e28e5b
+

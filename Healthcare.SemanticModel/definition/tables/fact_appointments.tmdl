@@ -2,6 +2,63 @@ table fact_appointments
 	lineageTag: 65b70471-eb4e-43e9-b68e-b29603aedcc2
 	sourceLineageTag: [healthcare].[fact_appointments]
 
+	measure 'Last Appointments Date' =
+			LASTNONBLANK (
+			'dim_date'[full_date],
+			CALCULATE ( COUNTROWS ( fact_appointments ) )
+			)
+		lineageTag: c6ec4458-aecd-4265-a3cb-538bafd74ad5
+
+	measure 'Total Appointments' = COUNTROWS ( fact_appointments )
+		lineageTag: 7c37d037-cf7a-4c41-a9de-550d93b196ab
+
+	measure 'Appointments YTD' =
+			VAR _refDate = [Last Appointments Date]
+			RETURN
+			CALCULATE (
+			[Total Appointments],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ), 1, 1 ),
+			_refDate
+			)
+			)
+		lineageTag: 0e4e3b73-c9f6-48b4-9546-1cca14994560
+
+	measure 'Appointments MTD' =
+			VAR _refDate = [Last Appointments Date]
+			RETURN
+			CALCULATE (
+			[Total Appointments],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			EOMONTH ( _refDate, -1 ) + 1,
+			_refDate
+			)
+			)
+		lineageTag: 30379b94-ac69-4d74-8c12-b21e6b6beea1
+
+	measure 'Total Appointments LY' =
+			VAR _refDate = [Last Appointments Date]
+			RETURN
+			CALCULATE (
+			[Total Appointments],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ) - 1, 1, 1 ),
+			EDATE ( _refDate, -12 )
+			)
+			)
+		lineageTag: 687823f1-fdff-47af-b14e-d33884ef3f9a
+
+	measure 'Appointments YoY %' =
+			DIVIDE (
+			[Total Appointments] - [Total Appointments LY],
+			[Total Appointments LY],
+			BLANK ()
+			)
+		lineageTag: ffa93bfb-6ddc-4db5-ad9c-40189012bd39
+
 	column fact_appointment_sk
 		dataType: int64
 		formatString: 0

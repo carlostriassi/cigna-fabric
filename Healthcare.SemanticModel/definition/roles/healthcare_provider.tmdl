@@ -1,24 +1,26 @@
-role 'healthcare_provider'
+role healthcare_provider
 	modelPermission: read
 
 	tablePermission dim_patient
-		columnPermission date_of_birth
-			metadataPermission: none
-		columnPermission email
-			metadataPermission: none
-		columnPermission phone
-			metadataPermission: none
-		columnPermission address_line_1
-			metadataPermission: none
-		columnPermission zip_code
-			metadataPermission: none
-		columnPermission mrn
-			metadataPermission: none
 
-	tablePermission dim_provider
-		filterExpression: dim_provider[provider_id] = LOOKUPVALUE(dim_security_user[provider_id], dim_security_user[user_principal_name], LOWER(USERPRINCIPALNAME()))
-		columnPermission license_number
-			metadataPermission: none
+		columnPermission date_of_birth = none
+
+		columnPermission email = none
+
+		columnPermission phone = none
+
+		columnPermission address_line_1 = none
+
+		columnPermission zip_code = none
+
+		columnPermission mrn = none
+
+	tablePermission dim_provider = dim_provider[provider_id] = LOOKUPVALUE(dim_security_user[provider_id], dim_security_user[user_principal_name], LOWER(USERPRINCIPALNAME()))
+
+		columnPermission license_number = none
 
 	tablePermission dim_security_user
 		metadataPermission: none
+
+	annotation PBI_Id = eb8d6e5e76604511a35f6f947d333c39
+

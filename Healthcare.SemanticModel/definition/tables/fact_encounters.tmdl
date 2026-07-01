@@ -2,6 +2,117 @@ table fact_encounters
 	lineageTag: 85edf9e7-c27b-4706-aa96-30af1b83d855
 	sourceLineageTag: [healthcare].[fact_encounters]
 
+	measure 'Last Encounters Date' =
+			LASTNONBLANK (
+			'dim_date'[full_date],
+			CALCULATE ( COUNTROWS ( fact_encounters ) )
+			)
+		lineageTag: d7cdef31-2162-418c-8545-3a1043980c8d
+
+	measure 'Total Encounters' = COUNTROWS ( fact_encounters )
+		lineageTag: b494e010-738e-46a9-8ec1-f3160364463b
+
+	measure 'Encounters YTD' =
+			VAR _refDate = [Last Encounters Date]
+			RETURN
+			CALCULATE (
+			[Total Encounters],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ), 1, 1 ),
+			_refDate
+			)
+			)
+		lineageTag: d4a7e34c-19f6-4a13-a9fa-283c95d77f18
+
+	measure 'Encounters MTD' =
+			VAR _refDate = [Last Encounters Date]
+			RETURN
+			CALCULATE (
+			[Total Encounters],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			EOMONTH ( _refDate, -1 ) + 1,
+			_refDate
+			)
+			)
+		lineageTag: c60aab6b-6626-4f87-9464-9e5d30e560f3
+
+	measure 'Total Encounters LY' =
+			VAR _refDate = [Last Encounters Date]
+			RETURN
+			CALCULATE (
+			[Total Encounters],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ) - 1, 1, 1 ),
+			EDATE ( _refDate, -12 )
+			)
+			)
+		lineageTag: b0773420-51f3-44db-8d16-0f4f022034ae
+
+	measure 'Encounters YoY %' =
+			DIVIDE (
+			[Total Encounters] - [Total Encounters LY],
+			[Total Encounters LY],
+			BLANK ()
+			)
+		lineageTag: efce56a9-b101-4bec-bb06-7b5e04624cc0
+
+	measure 'Total Total Charges' = SUM ( fact_encounters[total_charges] )
+		lineageTag: 2c5e77ae-1c9b-4513-9953-53e15b7cc18f
+
+	measure 'Avg Total Charges' = AVERAGE ( fact_encounters[total_charges] )
+		lineageTag: c6455548-6531-4a62-b2fa-9050fe202af6
+
+	measure 'Total Charges YTD' =
+			VAR _refDate = [Last Encounters Date]
+			RETURN
+			CALCULATE (
+			[Total Total Charges],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ), 1, 1 ),
+			_refDate
+			)
+			)
+		lineageTag: 3ed42bd2-5300-474b-8bc4-47c972d76053
+
+	measure 'Total Total Charges LY' =
+			VAR _refDate = [Last Encounters Date]
+			RETURN
+			CALCULATE (
+			[Total Total Charges],
+			DATESBETWEEN (
+			'dim_date'[full_date],
+			DATE ( YEAR ( _refDate ) - 1, 1, 1 ),
+			EDATE ( _refDate, -12 )
+			)
+			)
+		lineageTag: 7ef63d98-7f7b-4284-9e8a-3e9b8c712482
+
+	measure 'Total Charges YoY %' =
+			DIVIDE (
+			[Total Total Charges] - [Total Total Charges LY],
+			[Total Total Charges LY],
+			BLANK ()
+			)
+		lineageTag: 0c710621-87b8-4136-a6ae-e46c112bb6ad
+
+	measure 'Total Charges 3M Rolling' =
+			VAR _refDate = [Last Encounters Date]
+			RETURN
+			CALCULATE (
+			[Total Total Charges],
+			DATESINPERIOD (
+			'dim_date'[full_date],
+			_refDate,
+			-3,
+			MONTH
+			)
+			)
+		lineageTag: 4dbd1be6-21ea-4359-85aa-2de948f60363
+
 	column fact_encounter_sk
 		dataType: int64
 		formatString: 0
