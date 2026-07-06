@@ -1,7 +1,7 @@
 table fact_diagnoses
-	description: 'One row per diagnosis per encounter. Grain: diagnosis_id. An encounter can have multiple diagnoses. Use for ICD-10 frequency, severity mix, and diagnosis-type breakdown.'
 	lineageTag: 3ca0fa66-0c9b-4c4b-bbf4-20befb8bb4fa
 	sourceLineageTag: [healthcare].[fact_diagnoses]
+	description: 'One row per diagnosis per encounter. Grain: diagnosis_id. An encounter can have multiple diagnoses. Use for ICD-10 frequency, severity mix, and diagnosis-type breakdown.'
 
 	measure 'Last Diagnoses Date' =
 			LASTNONBLANK (

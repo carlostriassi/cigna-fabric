@@ -1,7 +1,7 @@
 table dim_date
-	description: 'Calendar dimension. Link to all facts via date_key (YYYYMMDD int). Use full_date for time-intelligence measures. Cigna fiscal year starts June. Do not use as a filter on its own without a measure.'
 	lineageTag: ad519cde-bc6c-4e36-897d-2bc302ecb04a
 	sourceLineageTag: [healthcare].[dim_date]
+	description: 'Calendar dimension. Link to all facts via date_key (YYYYMMDD int). Use full_date for time-intelligence measures. Cigna fiscal year starts June. Do not use as a filter on its own without a measure.'
 
 	column date_key
 		description: 'Integer join key in YYYYMMDD format. Identifier — do not sum. Links dim_date to all four fact tables. Not a usable date for visuals — use full_date instead.'
