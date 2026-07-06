@@ -1,19 +1,21 @@
+/// One row per procedure per encounter. Grain: procedure_id. Primary date: procedure_date — default time axis for financial and charge reporting. charge_amount = per-unit; total_charge = units x charge_a
 table fact_procedures
 	lineageTag: c4bf554b-f3c5-4168-b922-d9d682ef678e
 	sourceLineageTag: [healthcare].[fact_procedures]
 
+	/// Internal anchor: latest date with procedure data. Drives all procedure YTD/MTD/LY/3M measures. Do not display in visuals.
 	measure 'Last Procedures Date' =
 			LASTNONBLANK (
 			'dim_date'[full_date],
 			CALCULATE ( COUNTROWS ( fact_procedures ) )
 			)
-		description: 'Internal anchor: latest date with procedure data. Drives all procedure YTD/MTD/LY/3M measures. Do not display in visuals.'
 		lineageTag: 09fb709e-6abe-4561-8af0-be9aa7809f45
 
+	/// Count of procedure rows in filter context. One encounter can yield multiple rows — this is not an encounter or patient count.
 	measure 'Total Procedures' = COUNTROWS ( fact_procedures )
-		description: 'Count of procedure rows in filter context. One encounter can yield multiple rows — this is not an encounter or patient count.'
 		lineageTag: b3578d96-7731-4f10-93cd-43852edad9e5
 
+	/// Procedure count from Jan 1 of the most recent data year through the last procedure date. For Cigna FY (starts June) filter dim_date[fiscal_year] directly.
 	measure 'Procedures YTD' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -25,9 +27,9 @@ table fact_procedures
 			_refDate
 			)
 			)
-		description: 'Procedure count from Jan 1 of the most recent data year through the last procedure date. For Cigna FY (starts June) filter dim_date[fiscal_year] directly.'
 		lineageTag: d57081c2-b31b-4cae-b715-5b963d381620
 
+	/// Procedure count from the 1st of the current month through the last procedure date. Use for month-to-date procedure volume monitoring.
 	measure 'Procedures MTD' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -39,9 +41,9 @@ table fact_procedures
 			_refDate
 			)
 			)
-		description: 'Procedure count from the 1st of the current month through the last procedure date. Use for month-to-date procedure volume monitoring.'
 		lineageTag: c2cae73f-15a2-4767-817d-4539a9015acf
 
+	/// Procedure count for the equivalent YTD window in the prior calendar year. Use as baseline for YoY volume comparisons.
 	measure 'Total Procedures LY' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -53,26 +55,26 @@ table fact_procedures
 			EDATE ( _refDate, -12 )
 			)
 			)
-		description: 'Procedure count for the equivalent YTD window in the prior calendar year. Use as baseline for YoY volume comparisons.'
 		lineageTag: 78dcff08-3bc9-4fb7-9e6d-7be3194f7c88
 
+	/// Year-over-year % change in procedure volume. Positive = more procedures vs prior year. Do not sum — ratio measure. Returns BLANK if no prior-year data.
 	measure 'Procedures YoY %' =
 			DIVIDE (
 			[Total Procedures] - [Total Procedures LY],
 			[Total Procedures LY],
 			BLANK ()
 			)
-		description: 'Year-over-year % change in procedure volume. Positive = more procedures vs prior year. Do not sum — ratio measure. Returns BLANK if no prior-year data.'
 		lineageTag: f82320f2-e53b-40b0-be2c-a30c611db5ce
 
+	/// Sum of per-unit charge_amount across procedures (USD). Unit charge only — excludes quantity. Use [Total Total Charge] for full billed amount including units.
 	measure 'Total Charge Amount' = SUM ( fact_procedures[charge_amount] )
-		description: 'Sum of per-unit charge_amount across procedures (USD). Unit charge only — excludes quantity. Use [Total Total Charge] for full billed amount including units.'
 		lineageTag: 96bd574f-d3e2-434b-8b07-8716768e10d7
 
+	/// Average per-unit charge_amount per procedure row (USD). Use for unit-price benchmarking by CPT code, specialty, or department.
 	measure 'Avg Charge Amount' = AVERAGE ( fact_procedures[charge_amount] )
-		description: 'Average per-unit charge_amount per procedure row (USD). Use for unit-price benchmarking by CPT code, specialty, or department.'
 		lineageTag: 84022c4a-3d22-401d-812b-de26a37e4749
 
+	/// Sum of per-unit charge_amount from Jan 1 of the most recent data year through the last procedure date (USD). Unit charges only — see [Total Charge YTD] for full billed.
 	measure 'Charge Amount YTD' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -84,9 +86,9 @@ table fact_procedures
 			_refDate
 			)
 			)
-		description: 'Sum of per-unit charge_amount from Jan 1 of the most recent data year through the last procedure date (USD). Unit charges only — see [Total Charge YTD] for full billed.'
 		lineageTag: e65926d3-5209-470a-bb7c-2c011debcc84
 
+	/// Sum of per-unit charge_amount for the equivalent YTD window in the prior calendar year (USD). Baseline for YoY unit-price comparisons.
 	measure 'Total Charge Amount LY' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -98,18 +100,18 @@ table fact_procedures
 			EDATE ( _refDate, -12 )
 			)
 			)
-		description: 'Sum of per-unit charge_amount for the equivalent YTD window in the prior calendar year (USD). Baseline for YoY unit-price comparisons.'
 		lineageTag: 5d4bac7e-6ead-4d52-8a8d-e109ec9e3c07
 
+	/// Year-over-year % change in total per-unit charges. Do not sum — ratio measure. Reflects unit price movement, not volume change.
 	measure 'Charge Amount YoY %' =
 			DIVIDE (
 			[Total Charge Amount] - [Total Charge Amount LY],
 			[Total Charge Amount LY],
 			BLANK ()
 			)
-		description: 'Year-over-year % change in total per-unit charges. Do not sum — ratio measure. Reflects unit price movement, not volume change.'
 		lineageTag: d9d7637c-db0d-4b92-afa7-eed11950eec7
 
+	/// Sum of per-unit charge_amount over the trailing 3 calendar months ending on the last procedure date (USD). Smoothed unit-price trend.
 	measure 'Charge Amount 3M Rolling' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -122,17 +124,17 @@ table fact_procedures
 			MONTH
 			)
 			)
-		description: 'Sum of per-unit charge_amount over the trailing 3 calendar months ending on the last procedure date (USD). Smoothed unit-price trend.'
 		lineageTag: 92562fc6-a191-44b1-b288-61e701c1d481
 
+	/// Sum of total_charge (units x charge_amount) across procedures (USD). Full billed amount including quantity. Use this — not [Total Charge Amount] — for total financial exposure.
 	measure 'Total Total Charge' = SUM ( fact_procedures[total_charge] )
-		description: 'Sum of total_charge (units x charge_amount) across procedures (USD). Full billed amount including quantity. Use this — not [Total Charge Amount] — for total financial exposure.'
 		lineageTag: 2e0d835c-4e5d-48cf-839a-5d80df3342d0
 
+	/// Average total billed charge per procedure row (units x charge_amount, USD). Use for average-revenue-per-procedure benchmarking across specialties or CPT codes.
 	measure 'Avg Total Charge' = AVERAGE ( fact_procedures[total_charge] )
-		description: 'Average total billed charge per procedure row (units x charge_amount, USD). Use for average-revenue-per-procedure benchmarking across specialties or CPT codes.'
 		lineageTag: d4d62f0a-de57-4550-9ae3-8a0df7d3a7c0
 
+	/// Sum of total_charge from Jan 1 of the most recent data year through the last procedure date (USD). Full billed amount YTD. Primary measure for FY financial reporting.
 	measure 'Total Charge YTD' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -144,9 +146,9 @@ table fact_procedures
 			_refDate
 			)
 			)
-		description: 'Sum of total_charge from Jan 1 of the most recent data year through the last procedure date (USD). Full billed amount YTD. Primary measure for FY financial reporting.'
 		lineageTag: d98f9727-aa57-46ef-af77-0df07322d0cb
 
+	/// Sum of total_charge for the equivalent YTD window in the prior calendar year (USD). Full billed baseline for YoY total-charge comparisons.
 	measure 'Total Total Charge LY' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -158,18 +160,18 @@ table fact_procedures
 			EDATE ( _refDate, -12 )
 			)
 			)
-		description: 'Sum of total_charge for the equivalent YTD window in the prior calendar year (USD). Full billed baseline for YoY total-charge comparisons.'
 		lineageTag: e947dcb5-09da-4d01-9ec7-a50e1f937b38
 
+	/// Year-over-year % change in total billed charges (units x charge_amount). Do not sum — ratio measure. Reflects combined volume and unit-price movement.
 	measure 'Total Charge YoY %' =
 			DIVIDE (
 			[Total Total Charge] - [Total Total Charge LY],
 			[Total Total Charge LY],
 			BLANK ()
 			)
-		description: 'Year-over-year % change in total billed charges (units x charge_amount). Do not sum — ratio measure. Reflects combined volume and unit-price movement.'
 		lineageTag: 885d4dc6-e051-4271-9459-8f06b14170c3
 
+	/// Sum of total_charge over the trailing 3 calendar months ending on the last procedure date (USD). Full billed rolling trend — use for financial cycle and seasonality analysis.
 	measure 'Total Charge 3M Rolling' =
 			VAR _refDate = [Last Procedures Date]
 			RETURN
@@ -182,11 +184,10 @@ table fact_procedures
 			MONTH
 			)
 			)
-		description: 'Sum of total_charge over the trailing 3 calendar months ending on the last procedure date (USD). Full billed rolling trend — use for financial cycle and seasonality analysis.'
 		lineageTag: eeed5df3-c834-4cc8-8e05-c3c113150d60
 
+	/// Row surrogate key. Identifier — do not sum. Internal pipeline field for row uniqueness.
 	column fact_procedure_sk
-		description: 'Row surrogate key. Identifier — do not sum. Internal pipeline field for row uniqueness.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 215cddc9-051d-4304-a389-c6d87c488346
@@ -196,8 +197,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// YYYYMMDD integer FK to dim_date. Derived from procedure_date — the primary financial date for procedure analysis. Identifier — do not sum.
 	column date_key
-		description: 'YYYYMMDD integer FK to dim_date. Derived from procedure_date — the primary financial date for procedure analysis. Identifier — do not sum.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 185841c0-351d-4cda-b3e4-7a5b150e6f78
@@ -207,8 +208,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// FK to dim_provider. Identifier — do not sum. Drives RLS for procedure data — healthcare_provider and regional_manager roles restrict via this join.
 	column provider_sk
-		description: 'FK to dim_provider. Identifier — do not sum. Drives RLS for procedure data — healthcare_provider and regional_manager roles restrict via this join.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 59911bc3-64c3-4f25-9869-2b4cd4a746d3
@@ -218,8 +219,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Source system natural key for the procedure. Identifier — do not sum. One encounter_id can have multiple procedure_id rows.
 	column procedure_id
-		description: 'Source system natural key for the procedure. Identifier — do not sum. One encounter_id can have multiple procedure_id rows.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 16231b67-145b-461e-850c-f9fc66e358e7
@@ -229,8 +230,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Human-readable procedure reference (format: PRC-XXXXXX). Identifier — do not sum. Use for procedure lookups and drill-through labels.
 	column procedure_code
-		description: 'Human-readable procedure reference (format: PRC-XXXXXX). Identifier — do not sum. Use for procedure lookups and drill-through labels.'
 		dataType: string
 		lineageTag: 1ef1cbe7-5545-4197-8a3b-4b82573e9de2
 		sourceLineageTag: procedure_code
@@ -239,8 +240,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// FK to the parent encounter in fact_encounters (degenerate dimension). Identifier — do not sum. Use to join procedures to encounter context.
 	column encounter_id
-		description: 'FK to the parent encounter in fact_encounters (degenerate dimension). Identifier — do not sum. Use to join procedures to encounter context.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 58b3694e-514c-44bc-8d65-06bdd72f4d15
@@ -250,8 +251,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Current Procedural Terminology code identifying the procedure type. Use for procedure-mix, utilization benchmarking, and reimbursement analysis.
 	column cpt_code
-		description: 'Current Procedural Terminology code identifying the procedure type. Use for procedure-mix, utilization benchmarking, and reimbursement analysis.'
 		dataType: string
 		lineageTag: cc0964e4-edcd-46ff-93fb-0be1edcc93b8
 		sourceLineageTag: cpt_code
@@ -260,8 +261,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Human-readable procedure label. Always display alongside cpt_code in visuals. Use for top-N procedure ranking and drill-through labels.
 	column procedure_description
-		description: 'Human-readable procedure label. Always display alongside cpt_code in visuals. Use for top-N procedure ranking and drill-through labels.'
 		dataType: string
 		lineageTag: f624eb9a-7974-414d-b8d0-676798172a34
 		sourceLineageTag: procedure_description
@@ -270,8 +271,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Date the procedure was performed (service delivery date). Primary time axis for financial and charge reporting. Distinct from admit_date (episode start) and scheduled_at.
 	column procedure_date
-		description: 'Date the procedure was performed (service delivery date). Primary time axis for financial and charge reporting. Distinct from admit_date (episode start) and scheduled_at.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: 11e47381-cd2a-4ba4-b072-fbdd31f918de
@@ -281,8 +282,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Lifecycle status: SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED, UNKNOWN. Filter COMPLETED for financial reporting to exclude unbilled or cancelled procedures.
 	column procedure_status
-		description: 'Lifecycle status: SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED, UNKNOWN. Filter COMPLETED for financial reporting to exclude unbilled or cancelled procedures.'
 		dataType: string
 		lineageTag: 59cda13c-a471-40f1-a86c-eb26a162b6df
 		sourceLineageTag: procedure_status
@@ -291,8 +292,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Number of procedure units performed. Additive — sum for total units by CPT code or provider. Negative values rejected by DQ rules.
 	column units
-		description: 'Number of procedure units performed. Additive — sum for total units by CPT code or provider. Negative values rejected by DQ rules.'
 		dataType: int64
 		formatString: 0
 		lineageTag: a28e5fba-31ec-442f-9a84-8c0df1da7e06
@@ -302,8 +303,8 @@ table fact_procedures
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Billed charge per unit (USD). Additive — sum for total unit charges. Per-unit only — does not include quantity. Use total_charge for the full line amount.
 	column charge_amount
-		description: 'Billed charge per unit (USD). Additive — sum for total unit charges. Per-unit only — does not include quantity. Use total_charge for the full line amount.'
 		dataType: decimal
 		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: 09057aef-9cac-44d3-a8e7-8b504a1fc928
@@ -315,8 +316,8 @@ table fact_procedures
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
+	/// Derived: units x charge_amount (USD). Full billed amount for this procedure row. Additive — use [Total Total Charge] measure for aggregated totals. Distinct from charge_amount (per-unit).
 	column total_charge
-		description: 'Derived: units x charge_amount (USD). Full billed amount for this procedure row. Additive — use [Total Total Charge] measure for aggregated totals. Distinct from charge_amount (per-unit).'
 		dataType: double
 		lineageTag: 1daaf47d-f897-406a-bfe8-8201dfb640cd
 		sourceLineageTag: total_charge

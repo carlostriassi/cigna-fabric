@@ -1,9 +1,10 @@
+/// Provider credentials, specialty, region, and department. Primary RLS anchor: healthcare_provider filters by provider_id; regional_manager by region_code. Type 1 — latest row wins.
 table dim_provider
 	lineageTag: 9665374c-a4c0-44b7-a720-068829ab9992
 	sourceLineageTag: [healthcare].[dim_provider]
 
+	/// Source system natural key. Identifier — do not sum. Used by RLS: healthcare_provider role is scoped to rows where provider_id matches dim_security_user.
 	column provider_id
-		description: 'Source system natural key. Identifier — do not sum. Used by RLS: healthcare_provider role is scoped to rows where provider_id matches dim_security_user.'
 		dataType: int64
 		formatString: 0
 		lineageTag: dfa05d4e-9c38-48ca-955c-4ce6b574b643
@@ -13,8 +14,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Human-readable provider reference code from source system. Identifier — do not sum. Use for provider lookup and display labels.
 	column provider_code
-		description: 'Human-readable provider reference code from source system. Identifier — do not sum. Use for provider lookup and display labels.'
 		dataType: string
 		lineageTag: 19bbebd6-89ef-46a0-ad78-66eba1a220d1
 		sourceLineageTag: provider_code
@@ -23,8 +24,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// National Provider Identifier — unique federal credential number per clinician. Do not sum. Use for credentialing compliance and cross-system provider matching.
 	column npi_number
-		description: 'National Provider Identifier — unique federal credential number per clinician. Do not sum. Use for credentialing compliance and cross-system provider matching.'
 		dataType: string
 		lineageTag: 31ae5f06-898a-49c7-afb8-6094d5e41f1a
 		sourceLineageTag: npi_number
@@ -33,8 +34,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Provider given name. Use with last_name to display provider identity in visuals. Not a filter column — use specialty or region_code for grouping.
 	column first_name
-		description: 'Provider given name. Use with last_name to display provider identity in visuals. Not a filter column — use specialty or region_code for grouping.'
 		dataType: string
 		lineageTag: 361bf57e-65d1-4338-a27a-ad03ad751686
 		sourceLineageTag: first_name
@@ -43,8 +44,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Provider family name. Use with first_name to display provider identity. Not a filter column — use specialty or department_code for grouping.
 	column last_name
-		description: 'Provider family name. Use with first_name to display provider identity. Not a filter column — use specialty or department_code for grouping.'
 		dataType: string
 		lineageTag: 86692b31-fb76-461a-8728-d606ee5e9aba
 		sourceLineageTag: last_name
@@ -53,8 +54,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Clinical specialty (CARDIOLOGY, SURGERY, PRIMARY_CARE, ONCOLOGY, etc.). Primary breakdown dimension for encounter volume and procedure charge analysis.
 	column specialty
-		description: 'Clinical specialty (CARDIOLOGY, SURGERY, PRIMARY_CARE, ONCOLOGY, etc.). Primary breakdown dimension for encounter volume and procedure charge analysis.'
 		dataType: string
 		lineageTag: d623d325-e02a-4cc8-acb0-164a20465494
 		sourceLineageTag: specialty
@@ -63,8 +64,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Clinical credential (MD, DO, NP, PA, RN; XYZ = invalid test data — exclude). Use for credential-mix and scope-of-practice analysis.
 	column credential_type
-		description: 'Clinical credential (MD, DO, NP, PA, RN; XYZ = invalid test data — exclude). Use for credential-mix and scope-of-practice analysis.'
 		dataType: string
 		lineageTag: 2f67ca4d-f79f-43f0-b48f-95fa587368ca
 		sourceLineageTag: credential_type
@@ -73,8 +74,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// State of active clinical license. Use for multi-state compliance and credentialing analysis. Distinct from region_code (operational territory).
 	column license_state
-		description: 'State of active clinical license. Use for multi-state compliance and credentialing analysis. Distinct from region_code (operational territory).'
 		dataType: string
 		lineageTag: c87cd107-6268-4e44-96c6-589252621493
 		sourceLineageTag: license_state
@@ -83,8 +84,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// State license number. Sensitive — hidden for healthcare_provider and healthcare_auditor roles to prevent cross-provider credential lookup.
 	column license_number
-		description: 'State license number. Sensitive — hidden for healthcare_provider and healthcare_auditor roles to prevent cross-provider credential lookup.'
 		dataType: string
 		lineageTag: ec555a2c-1884-4766-b77e-6a556747c9ef
 		sourceLineageTag: license_number
@@ -93,8 +94,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Provider status (ACTIVE, INACTIVE, ON_LEAVE, PROBATION, SUSPENDED). Filter ACTIVE for all operational reporting — inactive providers distort volume metrics.
 	column employment_status
-		description: 'Provider status (ACTIVE, INACTIVE, ON_LEAVE, PROBATION, SUSPENDED). Filter ACTIVE for all operational reporting — inactive providers distort volume metrics.'
 		dataType: string
 		lineageTag: 21328ead-918d-4634-bd2d-d192333599f1
 		sourceLineageTag: employment_status
@@ -103,8 +104,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Date provider was hired. Use for tenure analysis and cohort comparisons. Not a clinical event date — do not use as a time axis for encounter or charge trends.
 	column hire_date
-		description: 'Date provider was hired. Use for tenure analysis and cohort comparisons. Not a clinical event date — do not use as a time axis for encounter or charge trends.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: eeb52e54-c5c9-4553-ad35-94c711338671
@@ -114,8 +115,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Geographic territory (NORTHEAST, MIDWEST, SOUTHEAST, SOUTHWEST, PACIFIC, WEST). RLS anchor for regional_manager role. Primary dimension for regional performance benchmarking.
 	column region_code
-		description: 'Geographic territory (NORTHEAST, MIDWEST, SOUTHEAST, SOUTHWEST, PACIFIC, WEST). RLS anchor for regional_manager role. Primary dimension for regional performance benchmarking.'
 		dataType: string
 		lineageTag: cdcc64aa-e0be-4fa9-a4a7-a208ef96cbf4
 		sourceLineageTag: region_code
@@ -124,8 +125,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Department (ED, ICU, MED, ONC, OUTPT, PEDS, RAD, SURG; XX-ZZ = test data — exclude). Use for department-level capacity, volume, and charge breakdowns.
 	column department_code
-		description: 'Department (ED, ICU, MED, ONC, OUTPT, PEDS, RAD, SURG; XX-ZZ = test data — exclude). Use for department-level capacity, volume, and charge breakdowns.'
 		dataType: string
 		lineageTag: 4d3c867a-fdc0-4170-a1fb-ffc5b7c7ffdb
 		sourceLineageTag: department_code
@@ -134,8 +135,8 @@ table dim_provider
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Surrogate key. Identifier — do not sum. Primary join key from all four fact tables to dim_provider. Use for model relationships, not report display.
 	column provider_sk
-		description: 'Surrogate key. Identifier — do not sum. Primary join key from all four fact tables to dim_provider. Use for model relationships, not report display.'
 		dataType: int64
 		formatString: 0
 		lineageTag: c42c8a6a-5d4f-4863-8ed7-90e2c41d39b0
