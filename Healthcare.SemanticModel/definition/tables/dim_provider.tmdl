@@ -1,7 +1,7 @@
 table dim_provider
-	description: 'Provider credentials, specialty, region, and department. Primary RLS anchor: healthcare_provider filters by provider_id; regional_manager by region_code. Type 1 — latest row wins.'
 	lineageTag: 9665374c-a4c0-44b7-a720-068829ab9992
 	sourceLineageTag: [healthcare].[dim_provider]
+	description: 'Provider credentials, specialty, region, and department. Primary RLS anchor: healthcare_provider filters by provider_id; regional_manager by region_code. Type 1 — latest row wins.'
 
 	column provider_id
 		description: 'Source system natural key. Identifier — do not sum. Used by RLS: healthcare_provider role is scoped to rows where provider_id matches dim_security_user.'

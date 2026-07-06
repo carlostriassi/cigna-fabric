@@ -1,7 +1,7 @@
 table fact_appointments
-	description: 'One row per scheduled appointment. Grain: appointment_id. Primary date: scheduled_at (booking date — not care delivery). Use for scheduling volume, no-show analysis, and department capacity.'
 	lineageTag: 65b70471-eb4e-43e9-b68e-b29603aedcc2
 	sourceLineageTag: [healthcare].[fact_appointments]
+	description: 'One row per scheduled appointment. Grain: appointment_id. Primary date: scheduled_at (booking date — not care delivery). Use for scheduling volume, no-show analysis, and department capacity.'
 
 	measure 'Last Appointments Date' =
 			LASTNONBLANK (

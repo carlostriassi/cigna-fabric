@@ -1,7 +1,7 @@
 table dim_patient
-	description: 'SCD2 patient demographics. PHI-protected — RLS restricts access by role. Tracks address, insurance carrier, and language over time. Filter is_current = true for latest version per patient.'
 	lineageTag: 260e1933-4218-48f4-918b-e74b39b21f3e
 	sourceLineageTag: [healthcare].[dim_patient]
+	description: 'SCD2 patient demographics. PHI-protected — RLS restricts access by role. Tracks address, insurance carrier, and language over time. Filter is_current = true for latest version per patient.'
 
 	column patient_id
 		description: 'Source system natural key for the patient. Identifier — do not sum. One patient may have multiple patient_sk rows (SCD2). Use for DISTINCTCOUNT patient analysis.'
