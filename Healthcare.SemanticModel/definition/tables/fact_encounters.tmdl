@@ -1,4 +1,5 @@
 table fact_encounters
+	description: 'One row per clinical encounter (INPATIENT, OUTPATIENT, EMERGENCY, TELEHEALTH). Grain: encounter_id. Primary date: admit_date — default time axis for utilization and episode-based analysis.'
 	lineageTag: 85edf9e7-c27b-4706-aa96-30af1b83d855
 	sourceLineageTag: [healthcare].[fact_encounters]
 
@@ -7,9 +8,11 @@ table fact_encounters
 			'dim_date'[full_date],
 			CALCULATE ( COUNTROWS ( fact_encounters ) )
 			)
+		description: 'Internal anchor: latest date with encounter data. Drives all encounter YTD/MTD/LY/3M measures. Do not display in visuals.'
 		lineageTag: d7cdef31-2162-418c-8545-3a1043980c8d
 
 	measure 'Total Encounters' = COUNTROWS ( fact_encounters )
+		description: 'Count of encounter rows in filter context. Not a distinct patient count — one patient can have multiple encounters across visits.'
 		lineageTag: b494e010-738e-46a9-8ec1-f3160364463b
 
 	measure 'Encounters YTD' =
@@ -23,6 +26,7 @@ table fact_encounters
 			_refDate
 			)
 			)
+		description: 'Encounter count from Jan 1 of the most recent data year through the last encounter date. For Cigna fiscal YTD (starts June) filter dim_date[fiscal_year] directly.'
 		lineageTag: d4a7e34c-19f6-4a13-a9fa-283c95d77f18
 
 	measure 'Encounters MTD' =
@@ -36,6 +40,7 @@ table fact_encounters
 			_refDate
 			)
 			)
+		description: 'Encounter count from the 1st of the current month through the last encounter date. Use for month-to-date utilization monitoring.'
 		lineageTag: c60aab6b-6626-4f87-9464-9e5d30e560f3
 
 	measure 'Total Encounters LY' =
@@ -49,6 +54,7 @@ table fact_encounters
 			EDATE ( _refDate, -12 )
 			)
 			)
+		description: 'Encounter count for the equivalent YTD window in the prior calendar year. Use as baseline in YoY comparisons.'
 		lineageTag: b0773420-51f3-44db-8d16-0f4f022034ae
 
 	measure 'Encounters YoY %' =
@@ -57,12 +63,15 @@ table fact_encounters
 			[Total Encounters LY],
 			BLANK ()
 			)
+		description: 'Year-over-year % change in encounter volume. Positive = more encounters vs prior year. Do not sum — ratio measure. Returns BLANK if no prior-year data.'
 		lineageTag: efce56a9-b101-4bec-bb06-7b5e04624cc0
 
 	measure 'Total Total Charges' = SUM ( fact_encounters[total_charges] )
+		description: 'Sum of gross billed charges (total_charges) across encounters in context (USD). Finance = gross billed; not allowed (contracting) or paid (net of cost-share) amount.'
 		lineageTag: 2c5e77ae-1c9b-4513-9953-53e15b7cc18f
 
 	measure 'Avg Total Charges' = AVERAGE ( fact_encounters[total_charges] )
+		description: 'Average gross billed charge per encounter (USD). Use for cost benchmarking by encounter_type, facility_code, or provider specialty.'
 		lineageTag: c6455548-6531-4a62-b2fa-9050fe202af6
 
 	measure 'Total Charges YTD' =
@@ -76,6 +85,7 @@ table fact_encounters
 			_refDate
 			)
 			)
+		description: 'Sum of encounter gross billed charges from Jan 1 of the most recent data year through last encounter date (USD). For Cigna FY use dim_date[fiscal_year] filter.'
 		lineageTag: 3ed42bd2-5300-474b-8bc4-47c972d76053
 
 	measure 'Total Total Charges LY' =
@@ -89,6 +99,7 @@ table fact_encounters
 			EDATE ( _refDate, -12 )
 			)
 			)
+		description: 'Sum of encounter gross billed charges for the equivalent YTD window in the prior calendar year (USD). Use as financial baseline for YoY charge comparisons.'
 		lineageTag: 7ef63d98-7f7b-4284-9e8a-3e9b8c712482
 
 	measure 'Total Charges YoY %' =
@@ -97,6 +108,7 @@ table fact_encounters
 			[Total Total Charges LY],
 			BLANK ()
 			)
+		description: 'Year-over-year % change in total encounter charges. Positive = higher charges vs prior year. Do not sum — ratio measure. Rising charges may reflect volume growth or unit-cost inflation.'
 		lineageTag: 0c710621-87b8-4136-a6ae-e46c112bb6ad
 
 	measure 'Total Charges 3M Rolling' =
@@ -111,9 +123,11 @@ table fact_encounters
 			MONTH
 			)
 			)
+		description: 'Sum of encounter charges over the trailing 3 calendar months ending on the last encounter date (USD). Use as a smoothed trend line to reduce month-to-month volatility.'
 		lineageTag: 4dbd1be6-21ea-4359-85aa-2de948f60363
 
 	column fact_encounter_sk
+		description: 'Row surrogate key. Identifier — do not sum. Internal pipeline field for row uniqueness.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 149158c1-40ba-4ac9-bc7c-92d3724fe11f
@@ -124,6 +138,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column date_key
+		description: 'YYYYMMDD integer FK to dim_date. Derived from admit_date — the primary episode date for utilization and clinical analysis. Identifier — do not sum.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 7e083617-c28a-496d-86a7-cdf080cb9b99
@@ -134,6 +149,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column patient_sk
+		description: 'FK to dim_patient (SCD2 — version at time of admission). Identifier — do not sum. Links encounter to patient demographics as they were at admit_date.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 80a68b39-d97c-4499-9593-bbe1a48528aa
@@ -144,6 +160,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column provider_sk
+		description: 'FK to dim_provider. Identifier — do not sum. Drives RLS filtering — all four role types restrict encounter visibility via this join.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 441f7955-acc8-4e7c-9817-1ab8c1162492
@@ -154,6 +171,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column encounter_id
+		description: 'Source system natural key for the encounter. Identifier — do not sum. One patient can have multiple encounter_id rows across visits.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 20991f02-b564-4c94-ab6b-460bfc515a46
@@ -164,6 +182,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column encounter_code
+		description: 'Human-readable encounter reference (format: ENC-XXXXXX). Identifier — do not sum. Use for encounter lookups and drill-through labels.'
 		dataType: string
 		lineageTag: 2e4e6e64-7a95-4674-a27a-47107ae922df
 		sourceLineageTag: encounter_code
@@ -173,6 +192,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column admit_date
+		description: 'Date the encounter began (admission or visit start). Primary time axis for episode-based and utilization analysis. Distinct from procedure_date and scheduled_at.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: c1f1d71c-8518-4cc0-88b9-4252c002cae9
@@ -183,6 +203,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column discharge_date
+		description: 'Date the patient was discharged. Use with admit_date to compute length of stay. DQ enforces discharge_date >= admit_date.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: ad9b3320-987e-46f8-b730-77469b5eb6c0
@@ -193,6 +214,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column encounter_type
+		description: 'Care setting: EMERGENCY, INPATIENT, OUTPATIENT, TELEHEALTH. Primary dimension for utilization-mix analysis and capacity planning.'
 		dataType: string
 		lineageTag: 5ba3fc9d-15c7-49cf-838a-4a6e3a854c7a
 		sourceLineageTag: encounter_type
@@ -202,6 +224,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column admission_source
+		description: 'How the patient entered the encounter: WALK_IN, PHYSICIAN_REFERRAL, EMERGENCY_ROOM, TRANSFER, SELF_REFERRAL. Use for referral-pattern and access-channel analysis.'
 		dataType: string
 		lineageTag: e593b9ed-dd3f-4e8d-9003-79c2086585fc
 		sourceLineageTag: admission_source
@@ -211,6 +234,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column discharge_disposition
+		description: 'Post-discharge destination: HOME, TRANSFER, SKILLED_NURSING, EXPIRED, AMA, ABANDONED. Use for post-acute care utilization and outcomes analysis.'
 		dataType: string
 		lineageTag: 717c7653-0255-46af-b2e9-033772de9722
 		sourceLineageTag: discharge_disposition
@@ -220,6 +244,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column appointment_id
+		description: 'FK to a prior appointment that led to this encounter. Nullable — 34.7% NULL (expected for walk-in and ED encounters). Identifier — do not sum.'
 		dataType: int64
 		formatString: 0
 		lineageTag: ef6ef473-cf81-499e-bf55-95bfde3768eb
@@ -230,6 +255,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column facility_code
+		description: 'Facility where the encounter occurred (FAC-MAIN, FAC-NORTH, FAC-SOUTH, FAC-EAST, FAC-WEST). Degenerate dimension — no separate facility table. Use for facility-level breakdowns.'
 		dataType: string
 		lineageTag: 82c7024d-69c3-492b-84a7-d921364b1b86
 		sourceLineageTag: facility_code
@@ -239,6 +265,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column length_of_stay_days
+		description: 'Inpatient stay duration in days. Additive — use AVERAGE for benchmarking, SUM for total bed-days. Negative values rejected by DQ. Relevant only for INPATIENT encounter_type.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 5c1b89e2-92e8-4221-9093-bfe1076a9856
@@ -249,6 +276,7 @@ table fact_encounters
 		annotation SummarizationSetBy = Automatic
 
 	column total_charges
+		description: 'Gross billed charges for the encounter (USD). Additive. Finance definition: gross billed. Not allowed amount (contracting) or paid amount (net of cost-share). See contentious metric note.'
 		dataType: decimal
 		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
 		lineageTag: f1eca78b-9ec5-4414-9bc2-4f4425b89c84
