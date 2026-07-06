@@ -1,7 +1,6 @@
 table dim_security_user
 	lineageTag: ac5ab9d4-953c-479d-a851-e4f2a9150d2e
 	sourceLineageTag: [shared].[dim_security_user]
-	description: 'Internal RLS lookup table — not for report use. OLS blocks access for all roles. Powers LOOKUPVALUE() in role filterExpressions to scope rows by provider_id or region_code.'
 
 	column user_principal_name
 		description: 'Entra ID UPN of the signed-in user (lowercase). Used internally by LOOKUPVALUE() in RLS filterExpressions. Not for report display.'

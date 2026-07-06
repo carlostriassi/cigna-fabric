@@ -1,7 +1,6 @@
 table fact_encounters
 	lineageTag: 85edf9e7-c27b-4706-aa96-30af1b83d855
 	sourceLineageTag: [healthcare].[fact_encounters]
-	description: 'One row per clinical encounter (INPATIENT, OUTPATIENT, EMERGENCY, TELEHEALTH). Grain: encounter_id. Primary date: admit_date — default time axis for utilization and episode-based analysis.'
 
 	measure 'Last Encounters Date' =
 			LASTNONBLANK (
