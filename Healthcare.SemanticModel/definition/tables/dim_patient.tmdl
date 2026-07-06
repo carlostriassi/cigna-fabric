@@ -1,8 +1,10 @@
 table dim_patient
+	description: 'SCD2 patient demographics. PHI-protected — RLS restricts access by role. Tracks address, insurance carrier, and language over time. Filter is_current = true for latest version per patient.'
 	lineageTag: 260e1933-4218-48f4-918b-e74b39b21f3e
 	sourceLineageTag: [healthcare].[dim_patient]
 
 	column patient_id
+		description: 'Source system natural key for the patient. Identifier — do not sum. One patient may have multiple patient_sk rows (SCD2). Use for DISTINCTCOUNT patient analysis.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 10cf83cb-cbda-449f-8430-12a30c6923f7
@@ -13,6 +15,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column patient_code
+		description: 'Human-readable patient reference code from source system. Identifier — do not sum. Use for patient lookups and display labels alongside first_name/last_name.'
 		dataType: string
 		lineageTag: 640f2154-9c51-4d75-96f8-9f9df6e87b8d
 		sourceLineageTag: patient_code
@@ -22,6 +25,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column mrn
+		description: 'Medical Record Number — unique clinical identifier per patient. PHI — hidden for healthcare_provider and healthcare_auditor roles. Do not use as a slicer in shared reports.'
 		dataType: string
 		lineageTag: 94b4fc64-dde9-4b44-b080-69f83f97d77d
 		sourceLineageTag: mrn
@@ -31,6 +35,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column first_name
+		description: 'Patient given name. PHI — hidden for healthcare_auditor role. Combine with last_name for patient identification. Not available to auditor role per HIPAA minimum necessary.'
 		dataType: string
 		lineageTag: f7c6a0df-9935-490f-87ec-499546b16873
 		sourceLineageTag: first_name
@@ -40,6 +45,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column last_name
+		description: 'Patient family name. PHI — hidden for healthcare_auditor role. Combine with first_name for patient identification. Not available to auditor role.'
 		dataType: string
 		lineageTag: 8ea17789-3a33-4e53-9875-3cc8cb3ad540
 		sourceLineageTag: last_name
@@ -49,6 +55,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column date_of_birth
+		description: 'Patient date of birth. PHI — hidden for healthcare_provider, regional_manager, and healthcare_auditor. Do not use as a time axis; use for age-band calculations only.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: a6a91d85-ba05-4d63-88ce-7afca8c8275a
@@ -59,6 +66,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column gender
+		description: 'Patient self-reported gender (F, M, O, X). Use for demographic breakdowns and health equity analysis.'
 		dataType: string
 		lineageTag: 3c74b49a-aede-42f9-81ee-112b23b59989
 		sourceLineageTag: gender
@@ -68,6 +76,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column address_line_1
+		description: 'Patient street address. PHI — hidden for healthcare_provider and healthcare_auditor roles. Use city or state for geographic analysis in restricted contexts.'
 		dataType: string
 		lineageTag: 1268e751-9d92-43a1-8740-20e13bc242b4
 		sourceLineageTag: address_line_1
@@ -77,6 +86,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column city
+		description: 'Patient city of residence. Less sensitive than address_line_1. Use for geographic distribution analysis when zip or address are unavailable.'
 		dataType: string
 		lineageTag: b7d48389-391d-4bc5-be37-b5dcbbcee722
 		sourceLineageTag: city
@@ -86,6 +96,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column state
+		description: 'Patient state of residence (2-letter code). Use for state-level geographic breakdowns and regional equity analysis.'
 		dataType: string
 		lineageTag: b40b9d38-ccb4-4d84-9e18-121192283b93
 		sourceLineageTag: state
@@ -95,6 +106,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column zip_code
+		description: 'Patient zip code. PHI — hidden for healthcare_provider and healthcare_auditor roles. Use state or city for geographic analysis in restricted roles.'
 		dataType: string
 		lineageTag: 9502e4ac-5b73-4b5b-9d88-fc037cb4582e
 		sourceLineageTag: zip_code
@@ -104,6 +116,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column phone
+		description: 'Patient phone number. PHI — masked as ***-***-XXXX for healthcare_provider and regional_manager roles via DAX calculated column.'
 		dataType: string
 		lineageTag: 532e7b97-9893-4c6c-bb50-18ad1eee5987
 		sourceLineageTag: phone
@@ -113,6 +126,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column email
+		description: 'Patient email address. PHI — masked as ****@domain.com for healthcare_provider and regional_manager roles via DAX calculated column.'
 		dataType: string
 		lineageTag: 351696f3-a273-4df8-a216-913fb1426474
 		sourceLineageTag: email
@@ -122,6 +136,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column primary_provider_id
+		description: 'FK to the patient''s assigned primary care provider. Identifier — do not sum. Join to dim_provider[provider_id] for provider-level details.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 9159c399-fe54-4912-9b1c-d8ca5905b712
@@ -132,6 +147,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column insurance_carrier
+		description: 'Health insurance carrier at the time of this SCD2 version (AETNA, BCBS, CIGNA, HUMANA, etc.). Tracked for change — filter is_current = true for latest carrier.'
 		dataType: string
 		lineageTag: 732f1a29-fe30-461d-831e-6b248d12f103
 		sourceLineageTag: insurance_carrier
@@ -141,6 +157,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column consent_status
+		description: 'Patient data consent status (GRANTED, DENIED, PENDING, UNKNOWN). Filter GRANTED when restricting to consented patients for research or outreach analysis.'
 		dataType: string
 		lineageTag: d554dfe9-b5fb-4100-8632-22ef9ada390c
 		sourceLineageTag: consent_status
@@ -150,6 +167,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column race
+		description: 'Patient self-reported race. Use for health equity and demographic disparity analysis. Not a clinical field.'
 		dataType: string
 		lineageTag: adf2585f-5d28-4739-b808-7381f70edc7c
 		sourceLineageTag: race
@@ -159,6 +177,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column preferred_language
+		description: 'Patient preferred language for care communication. Use for language-access gap analysis and interpreter services planning.'
 		dataType: string
 		lineageTag: 4bb484e8-6220-4e0d-af7a-e6f34475b4cb
 		sourceLineageTag: preferred_language
@@ -168,6 +187,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column _scd2_hash
+		description: 'Internal SHA-256 hash of SCD2-tracked columns. Used by pipeline to detect changes — not for report use.'
 		dataType: string
 		lineageTag: 2bb75908-568e-4f62-9208-2d7f421ed416
 		sourceLineageTag: _scd2_hash
@@ -177,6 +197,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column patient_sk
+		description: 'SCD2 surrogate key — unique per patient version, not per patient. Identifier — do not sum. Use patient_id for distinct patient counts; use patient_sk for model joins.'
 		dataType: int64
 		formatString: 0
 		lineageTag: fe8715dd-af27-45a6-9262-855d05e14e50
@@ -187,6 +208,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column eff_start_date
+		description: 'SCD2 effective start date for this patient record version. Use to identify when a tracked attribute (address, carrier, language) changed.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: a4f7bc78-7dfa-4a4d-bbe4-c2d5dce52628
@@ -197,6 +219,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column eff_end_date
+		description: 'SCD2 effective end date (NULL if current version). Use with eff_start_date to query patient attributes at a point in time.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: 872f6700-9a9d-46f7-a0e7-55778598bd36
@@ -207,6 +230,7 @@ table dim_patient
 		annotation SummarizationSetBy = Automatic
 
 	column is_current
+		description: 'True for the active patient record version. Always filter is_current = true unless doing point-in-time historical analysis.'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 1b111e1f-ce77-4949-8c34-731b1a4e5c89

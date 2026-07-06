@@ -1,4 +1,5 @@
 table fact_appointments
+	description: 'One row per scheduled appointment. Grain: appointment_id. Primary date: scheduled_at (booking date — not care delivery). Use for scheduling volume, no-show analysis, and department capacity.'
 	lineageTag: 65b70471-eb4e-43e9-b68e-b29603aedcc2
 	sourceLineageTag: [healthcare].[fact_appointments]
 
@@ -7,9 +8,11 @@ table fact_appointments
 			'dim_date'[full_date],
 			CALCULATE ( COUNTROWS ( fact_appointments ) )
 			)
+		description: 'Internal anchor: latest date with appointment data. Drives all appointment YTD/MTD/LY measures. Do not display in visuals — used as a VAR inside time-intelligence measures.'
 		lineageTag: c6ec4458-aecd-4265-a3cb-538bafd74ad5
 
 	measure 'Total Appointments' = COUNTROWS ( fact_appointments )
+		description: 'Count of appointment rows in filter context. Use as denominator for no-show rate. Not a distinct patient count — one patient can have multiple appointments.'
 		lineageTag: 7c37d037-cf7a-4c41-a9de-550d93b196ab
 
 	measure 'Appointments YTD' =
@@ -23,6 +26,7 @@ table fact_appointments
 			_refDate
 			)
 			)
+		description: 'Appointment count from Jan 1 of the most recent data year through the last appointment date. Calendar year — for fiscal YTD filter dim_date[fiscal_year] directly.'
 		lineageTag: 0e4e3b73-c9f6-48b4-9546-1cca14994560
 
 	measure 'Appointments MTD' =
@@ -36,6 +40,7 @@ table fact_appointments
 			_refDate
 			)
 			)
+		description: 'Appointment count from the 1st of the current month through the last appointment date. Use for month-to-date operational scheduling monitoring.'
 		lineageTag: 30379b94-ac69-4d74-8c12-b21e6b6beea1
 
 	measure 'Total Appointments LY' =
@@ -49,6 +54,7 @@ table fact_appointments
 			EDATE ( _refDate, -12 )
 			)
 			)
+		description: 'Appointment count for the equivalent YTD window in the prior calendar year. Pair with [Total Appointments] for side-by-side YoY comparison.'
 		lineageTag: 687823f1-fdff-47af-b14e-d33884ef3f9a
 
 	measure 'Appointments YoY %' =
@@ -57,9 +63,11 @@ table fact_appointments
 			[Total Appointments LY],
 			BLANK ()
 			)
+		description: 'Year-over-year % change in appointment volume. Positive = growth vs prior year. Do not sum — ratio measure. Returns BLANK if no prior-year data.'
 		lineageTag: ffa93bfb-6ddc-4db5-ad9c-40189012bd39
 
 	column fact_appointment_sk
+		description: 'Row surrogate key. Identifier — do not sum. Internal pipeline field for row uniqueness, not a business identifier.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 02b8d52f-b5b2-40ff-9d1d-a999257e6f4f
@@ -70,6 +78,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column date_key
+		description: 'YYYYMMDD integer FK to dim_date. Derived from scheduled_at (booking date). Identifier — do not sum. Use dim_date[full_date] for time-axis visuals.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 56aa61b3-1d2b-49ea-8378-e264142019bf
@@ -80,6 +89,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column patient_sk
+		description: 'FK to dim_patient (SCD2). Identifier — do not sum. Links each appointment to the current patient demographic version at booking time.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 267fdf38-6498-46e7-93ea-836a6a37b9e9
@@ -90,6 +100,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column provider_sk
+		description: 'FK to dim_provider. Identifier — do not sum. Drives RLS filtering — regional_manager and healthcare_provider roles restrict via this join.'
 		dataType: int64
 		formatString: 0
 		lineageTag: b031f6d6-bfa1-47cb-b091-efa80e8c26e7
@@ -100,6 +111,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column appointment_id
+		description: 'Source system natural key for the appointment. Identifier — do not sum. Use appointment_code for human-readable reference.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 7cc671ac-1934-4f80-a426-1134ff383c8f
@@ -110,6 +122,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column appointment_code
+		description: 'Human-readable appointment reference (format: APT-XXXXXX). Identifier — do not sum. Use for appointment lookups and drill-through labels.'
 		dataType: string
 		lineageTag: a4ff2827-4d60-4366-8eb0-95faaae6db88
 		sourceLineageTag: appointment_code
@@ -119,6 +132,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column scheduled_at
+		description: 'Timestamp when the appointment was booked. Not a care delivery date — use admit_date (encounters) or procedure_date (procedures) for clinical time-series analysis.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: 137e6667-548b-4dad-a93e-61d8e9da9a66
@@ -129,6 +143,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column appointment_status
+		description: 'Outcome status: SCHEDULED, COMPLETED, CANCELLED, NO_SHOW, RESCHEDULED. Filter NO_SHOW to calculate no-show rate; filter COMPLETED for fulfilled-visit analysis.'
 		dataType: string
 		lineageTag: af35501f-6263-4de1-a122-2743365bff81
 		sourceLineageTag: appointment_status
@@ -138,6 +153,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column appointment_type
+		description: 'Visit category: ROUTINE, URGENT, FOLLOWUP, CONSULTATION, ANNUAL_PHYSICAL, WALK_THROUGH. Use for visit-type mix and access pattern analysis.'
 		dataType: string
 		lineageTag: fa5987c3-195d-4651-92ad-f619e19228ec
 		sourceLineageTag: appointment_type
@@ -147,6 +163,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column duration_minutes
+		description: 'Planned appointment length in minutes. Additive — sum for total scheduled time by department or provider. Negative values rejected by DQ rules.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 715996c2-7657-45ca-990e-75ad4bb09ce8
@@ -157,6 +174,7 @@ table fact_appointments
 		annotation SummarizationSetBy = Automatic
 
 	column department_code
+		description: 'Scheduling department (ED, ICU, MED, ONC, OUTPT, PEDS, RAD, SURG; XX-ZZ = test data). Use for department capacity and scheduling volume analysis.'
 		dataType: string
 		lineageTag: ef183797-933e-4468-989e-8fbaec7d0663
 		sourceLineageTag: department_code
