@@ -1,9 +1,10 @@
+/// Calendar dimension. Link to all facts via date_key (YYYYMMDD int). Use full_date for time-intelligence measures. Cigna fiscal year starts June. Do not use as a filter on its own without a measure.
 table dim_date
 	lineageTag: ad519cde-bc6c-4e36-897d-2bc302ecb04a
 	sourceLineageTag: [healthcare].[dim_date]
 
+	/// Integer join key in YYYYMMDD format. Identifier — do not sum. Links dim_date to all four fact tables. Not a usable date for visuals — use full_date instead.
 	column date_key
-		description: 'Integer join key in YYYYMMDD format. Identifier — do not sum. Links dim_date to all four fact tables. Not a usable date for visuals — use full_date instead.'
 		dataType: int64
 		formatString: 0
 		lineageTag: e2303566-124b-48e4-afd4-5f0533ac56bf
@@ -13,8 +14,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Actual calendar date. Use as time axis in all line charts and time-intelligence measures (TOTALYTD, DATESINPERIOD, etc.). Required for all YTD/LY/YoY measures.
 	column full_date
-		description: 'Actual calendar date. Use as time axis in all line charts and time-intelligence measures (TOTALYTD, DATESINPERIOD, etc.). Required for all YTD/LY/YoY measures.'
 		dataType: dateTime
 		formatString: General Date
 		lineageTag: 021eb78d-dd71-4351-8432-817c5b466a0a
@@ -24,8 +25,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Calendar year integer (e.g. 2024). Identifier — do not sum. Use for year-over-year slicers and axis labels. For fiscal year, use fiscal_year column instead.
 	column year
-		description: 'Calendar year integer (e.g. 2024). Identifier — do not sum. Use for year-over-year slicers and axis labels. For fiscal year, use fiscal_year column instead.'
 		dataType: int64
 		formatString: 0
 		lineageTag: c9653504-9ac5-408d-9a30-34b59fb75ec1
@@ -35,8 +36,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Calendar quarter 1–4. Identifier — do not sum. Use for quarterly trend grouping. For Cigna fiscal quarters (starts June), use fiscal_quarter column.
 	column quarter
-		description: 'Calendar quarter 1–4. Identifier — do not sum. Use for quarterly trend grouping. For Cigna fiscal quarters (starts June), use fiscal_quarter column.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 75c9d768-3d12-46e2-a9ee-f3c3b62942df
@@ -46,8 +47,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Calendar month 1–12. Identifier — do not sum. Use for sort order when displaying month_name in visuals — sort month_name by this column.
 	column month_num
-		description: 'Calendar month 1–12. Identifier — do not sum. Use for sort order when displaying month_name in visuals — sort month_name by this column.'
 		dataType: int64
 		formatString: 0
 		lineageTag: c1c3ce1d-384a-4de4-af86-90ef1cd07cea
@@ -57,8 +58,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Full month name (e.g. January). Use for display labels in charts. Always sort by month_num to avoid alphabetical ordering.
 	column month_name
-		description: 'Full month name (e.g. January). Use for display labels in charts. Always sort by month_num to avoid alphabetical ordering.'
 		dataType: string
 		lineageTag: 7cb5697d-2f53-4f2c-8b5c-34c66cf47eba
 		sourceLineageTag: month_name
@@ -67,8 +68,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Day of month 1–31. Identifier — do not sum. Use for daily granularity filtering and heatmap visuals.
 	column day_of_month
-		description: 'Day of month 1–31. Identifier — do not sum. Use for daily granularity filtering and heatmap visuals.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 62260615-cf34-4e4d-8f21-2eac5a3d6e64
@@ -78,8 +79,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Day of week number (1=Sunday). Identifier — do not sum. Use for weekday pattern analysis; pair with day_name for readable labels.
 	column day_of_week
-		description: 'Day of week number (1=Sunday). Identifier — do not sum. Use for weekday pattern analysis; pair with day_name for readable labels.'
 		dataType: int64
 		formatString: 0
 		lineageTag: 107ea36c-638f-4162-92fb-cf92acd84633
@@ -89,8 +90,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Day of week name (e.g. Monday). Use for display labels; sort by day_of_week for correct ordering.
 	column day_name
-		description: 'Day of week name (e.g. Monday). Use for display labels; sort by day_of_week for correct ordering.'
 		dataType: string
 		lineageTag: b256b564-f6f2-4e33-af35-879bcdb6725b
 		sourceLineageTag: day_name
@@ -99,8 +100,8 @@ table dim_date
 
 		annotation SummarizationSetBy = Automatic
 
+	/// True if Saturday or Sunday. Use to split weekday vs. weekend encounter and appointment volumes for staffing analysis.
 	column is_weekend
-		description: 'True if Saturday or Sunday. Use to split weekday vs. weekend encounter and appointment volumes for staffing analysis.'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 45d5ef0d-70e4-402b-87bc-df5d744e86a7
