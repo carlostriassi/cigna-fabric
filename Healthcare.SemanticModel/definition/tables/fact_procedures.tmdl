@@ -1,7 +1,6 @@
 table fact_procedures
 	lineageTag: c4bf554b-f3c5-4168-b922-d9d682ef678e
 	sourceLineageTag: [healthcare].[fact_procedures]
-	description: 'One row per procedure per encounter. Grain: procedure_id. Primary date: procedure_date — default time axis for financial and charge reporting. charge_amount = per-unit; total_charge = units x charge_a'
 
 	measure 'Last Procedures Date' =
 			LASTNONBLANK (
